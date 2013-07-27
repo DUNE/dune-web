@@ -1,0 +1,56 @@
+#+title: LBNE Member Web App
+
+* Starting Out
+
+** Installation
+
+#+BEGIN_SRC :eval no
+sudo apt-get install django virtualenv
+virtualenv --system-site-packages venv
+source venv/bin/activate
+pip install django_extensions Werkzeug south ipython
+deactivate
+#+END_SRC
+
+* Start the project
+
+#+BEGIN_SRC sh :eval no
+git clone ... lbneweb
+cd lbneweb/
+ln -s ../venv/lib/python2.7/site-packages .
+emacs lbneweb.conf
+./manage.py syncdb
+#+END_SRC
+
+* Create authors app
+
+** Models
+
+#+BEGIN_SRC sh :eval no
+./manage startapp members
+emacs members/models.py
+./manage syncdb
+#+END_SRC
+
+*** Prime DB
+
+Put latest =lbneiblist.txt= and =lbnephonelist.txt= from:
+http://lbne2-docdb.fnal.gov:8080/cgi-bin/ShowDocument?docid=270
+into =members/data/=.
+
+Test how messed up the format has gotten:
+
+#+BEGIN_SRC sh :eval no
+./manage.py shell
+#+END_SRC
+#+BEGIN_SRC python :eval no
+from members import loader
+reload (loader); d = loader.Data(); d.load()
+#+END_SRC
+
+Beat on the wound until the blood runs clear.
+
+#+BEGIN_SRC sh :eval no
+./manage.py runscript load_members --script-args roles
+./manage.py runscript load_members --script-args members
+#+END_SRC

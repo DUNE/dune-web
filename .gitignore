@@ -1,0 +1,7 @@
+lbneweb.conf
+*~
+*.pyc
+*.sqlite3
+site-packages
+venv
+data

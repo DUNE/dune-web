@@ -1,0 +1,15 @@
+<h2>{{ member.full_name }}</h2>
+<p>
+  <ul>
+    <li>{{ member.institution.full_name }}</li>
+    <li>{{ member.email }}</li>
+    <li>{{ member.phone }}</li>
+    {% for role in member.role.all %}
+    <li>{{ role.desc }}</li>
+    {% endfor %}
+    {% if member.begin_date %}
+    <li>Date Joined: {{ member.begin_date }}</li>
+    {% endif %}
+  </ul>
+</p>
+

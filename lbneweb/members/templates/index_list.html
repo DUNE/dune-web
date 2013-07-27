@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}LBNE Collaboration{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/tablesorter.css")?>
+{% endblock %}
+
+{% block content %}
+
+    {% if form %}
+        {% include "search.html" %}
+    {% endif %}
+
+    {% if institution %}
+        <h1 style='margin-top: 20px'>{{ institution.full_name }}</h1>
+        <blockquote>{{ institution.address }}</blockquote>        
+    {% endif %}
+
+    <table style='margin-top: 20px' id='table_memberlist' class='tablesorter'>
+        <thead><tr>
+            <th style='width:250px;'>Institution</th>
+            <th>Name (Last, First)</th>
+            <th>Roles</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr></thead>
+        <tbody>
+        {% for member in member_list %}
+        <tr class="{% cycle 'row1' 'row2' %}">
+            <td><a href='{{ member.institution.get_absolute_url }}'>{{ member.institution.full_name }}</a></td>
+            <td><a href='{{ member.get_absolute_url }}'>{{ member.full_name }}</a></td>
+            <td>{{ member.roles_html|safe }}</td>
+            <td>{{ member.email }}</td>
+            <td>{{ member.phone }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot><tr>
+            <td colspan='5' style='text-align: center;'>
+                {{ instCount }} institution{{ instCount|pluralize }}, 
+                {{ count }} collaborator{{ count|pluralize }}
+            </td>
+        </tr></tfoot>
+    </table>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.tablesorter.min.js"></script>   
+<script type="text/javascript" src="{{ MEDIA_URL }}js/members/list.js"></script>    
+{% endblock %}
+
