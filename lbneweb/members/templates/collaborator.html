@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}LBNE Collaboration{% endblock %}
+
+{% block content %}
+
+<h2>{{ member.full_name }}</h2>
+<p>
+  <ul>
+    <li>
+      <a href='{{ member.institution.get_absolute_url }}'>{{ member.institution.full_name }}</a>
+    </li>
+    <li>{{ member.email }}</li>
+    <li>{{ member.phone }}</li>
+    {% for role in member.role.all %}
+    <li>{{ role.desc }}</li>
+    {% endfor %}
+    {% if member.begin_date %}
+    <li>Date Joined: {{ member.begin_date }}</li>
+    {% endif %}
+  </ul>
+</p>
+
+{% endblock %}

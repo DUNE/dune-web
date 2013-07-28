@@ -1,0 +1,17 @@
+\begin{center}
+  \textbf{The LBNE Collaboration}
+\end{center}
+
+{% for inst in inst_list %}\newcommand{% templatetag openbrace %}\{{inst.short_name}}{% templatetag closebrace %}{% templatetag openbrace %}{{ inst.full_name|safe }}, {{ inst.address_short|safe }}{% templatetag closebrace %}
+{% endfor %}
+
+{% for inst in inst_list %}
+\affiliation{% templatetag openbrace %}\{{inst.short_name}}{% templatetag closebrace %}
+{% endfor %}
+
+
+{% for member in member_list %}\author{% templatetag openbrace %}{{member.first_name_initial|safe}}~{{member.last_name|safe}}{% templatetag closebrace %}
+\affiliation{% templatetag openbrace %}\{{ member.institution.short_name }}{% templatetag closebrace %}
+{% endfor %}
+
+

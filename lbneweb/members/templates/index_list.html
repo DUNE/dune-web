@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %}LBNE Collaboration{% endblock %}
 
+{% load staticfiles %}
 {% block extra_head %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/tablesorter.css")?>
+<link rel="stylesheet" type="text/css" href="{% static "css/tablesorter.css" %}")?>
 {% endblock %}
 
 {% block content %}
@@ -29,7 +30,11 @@
         <tr class="{% cycle 'row1' 'row2' %}">
             <td><a href='{{ member.institution.get_absolute_url }}'>{{ member.institution.full_name }}</a></td>
             <td><a href='{{ member.get_absolute_url }}'>{{ member.full_name }}</a></td>
-            <td>{{ member.roles_html|safe }}</td>
+            <td> 
+	      {% for role in member.role.all %}	    
+	      <a alt="{{ role.desc }}" href="{{ role.get_absolute_url }}">{{ role.name }}</a>
+	      {% endfor %}
+	    </td>
             <td>{{ member.email }}</td>
             <td>{{ member.phone }}</td>
         </tr>
@@ -45,7 +50,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.tablesorter.min.js"></script>   
-<script type="text/javascript" src="{{ MEDIA_URL }}js/members/list.js"></script>    
+<script type="text/javascript" src="{% static "js/jquery.tablesorter.min.js" %}"></script>   
+<script type="text/javascript" src="{% static "js/members/list.js" %}"></script>    
 {% endblock %}
 

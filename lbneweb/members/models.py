@@ -22,6 +22,8 @@ class Role(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return "%s/members/role/%d" % (settings.SITE_ROOT, self.id)
 
 class Institution(models.Model):
     short_name = models.CharField(max_length=64)
@@ -35,7 +37,7 @@ class Institution(models.Model):
         return self.short_name
     
     def get_absolute_url(self):
-        return "%s/collaboration/institution/id/%d" % (settings.SITE_ROOT, self.id)
+        return "%s/members/institution/%d" % (settings.SITE_ROOT, self.id)
 
     def address_short(self):
         fields = [ x.strip() for x in self.address.split(',') ][-2:]
@@ -63,7 +65,7 @@ class Individual(models.Model):
         return self.first_name +' '+ self.last_name
 
     def get_absolute_url(self):
-        return "%s/collaboration/member/id/%d" % (settings.SITE_ROOT, self.id)
+        return "%s/members/collaborator/%d" % (settings.SITE_ROOT, self.id)
         
     
     def full_name(self):
@@ -79,10 +81,10 @@ class Individual(models.Model):
         return rs.rstrip(', ')  
 
     def roles_html(self):
-        rs = ''
+        rs = []
         for obj in self.role.all():
-            rs += '<abbr title="' + obj.desc + '">' + obj.name + '</abbr>, '
-        return rs.rstrip(', ') 
+            rs.append('<abbr title="' + obj.desc + '">' + obj.name + '</abbr>')
+        return ', '.join(rs)
             
     def IBR(self):
         for obj in self.role.all():

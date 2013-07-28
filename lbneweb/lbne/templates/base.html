@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+{% load staticfiles %}
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/lbne_style.css")?>
+    <link rel="stylesheet" type="text/css" href="{% static "css/lbne_style.css" %}")?>
     {% block extra_head %}{% endblock %} 
     <title>{% block title %}LBNE Web{% endblock %}</title>
 </head>
@@ -11,12 +12,9 @@
     <div id="sidebar">
         {% block sidebar %}
         <ul>
-            {# <li><a href="{{ SITE_ROOT }}/">LBNE Web Home</a></li> #}
-            <li><a href="{{ SITE_ROOT }}/collaboration/">Collaboration</a></li>
-            <li><a href="{{ SITE_ROOT }}/collaboration/lbneiblist.txt">IB List (txt)</a></li>
-            <li><a href="{{ SITE_ROOT }}/collaboration/lbnephonelist.txt">Phone List (txt)</a></li>
-            <li><a href="{{ SITE_ROOT }}/collaboration/lbneauthor.tex">Author List (REVTEX)</a></li>
-            <li><a href="{{ SITE_ROOT }}/admin/">Admin</a></li>
+            <li><a href="{{ SITE_ROOT }}/members/search/">Search</a></li>
+            <li><a href="{{ SITE_ROOT }}/members/export/">Files</a></li>
+            <li><a href="{{ SITE_ROOT }}/admin/">[Admin]</a></li>
         </ul>
         {% endblock %}
     </div>
@@ -25,7 +23,7 @@
         {% block content %}{% endblock %}
     </div>
 
-    <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="{% static "js/jquery-1.6.1.min.js" %}"></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

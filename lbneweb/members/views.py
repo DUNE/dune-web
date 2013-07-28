@@ -2,10 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.db.models import Q
 
-from django.http import HttpResponseRedirect
-
-
-from members.models import Individual
+from members.models import Individual, Institution, Role
 from members.forms import SearchMemberListForm
 
 
@@ -26,11 +23,21 @@ class IndexView(generic.ListView):
                 )
         
         
-class DetailView(generic.DetailView):
+class CollaboratorView(generic.DetailView):
     model = Individual
-    template_name = 'detail.html'
+    template_name = 'collaborator.html'
     context_object_name = 'member'
 
+
+class InstitutionView(generic.DetailView):
+    model = Institution
+    template_name = 'institution.html'
+    context_object_name = 'member'
+
+class RoleView(generic.DetailView):
+    model = Role
+    template_name = 'role.html'
+    context_object_name = 'member'
 
 def search(request):
     member_list = Individual.objects.select_related().filter(collaborator=True)
@@ -68,3 +75,41 @@ class SearchView(generic.edit.FormView):
     
     def form_valid(self, form):
         return super(SearchView, self).form_valid(form)
+
+from django.http import HttpResponse
+def xls_to_response(xls, fname):
+    response = HttpResponse(mimetype="application/ms-excel")
+    response['Content-Disposition'] = 'attachment; filename=%s' % fname
+    xls.save(response)
+    return response
+
+from django.core import serializers
+def members_to_xls(member_list):
+    import xlwt
+    wb = xlwt.Workbook()
+    ws = wb.add_sheet('Collaborators')
+
+    members = serializers.serialize( "python", member_list)
+    for irow,mem in enumerate(members):
+        if irow == 0:
+            for icol, name in enumerate(mem['fields'].keys()):
+                ws.write(irow, icol, name)
+        irow += 1
+        for icol, value in enumerate(mem['fields'].values()):
+            ws.write(irow, icol, str(value))
+    return wb
+
+
+def export(request, filename):
+    if not filename:
+        filename = 'export.html'
+    member_list = Individual.objects.select_related().filter(collaborator=True)
+
+    if filename.endswith('.xls'):
+        wb = members_to_xls(member_list)
+        return xls_to_response(wb, filename)
+
+    return render(request, filename,
+                  dict(inst_list = set([m.institution for m in member_list]),
+                       member_list = member_list))
+    

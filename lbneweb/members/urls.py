@@ -16,5 +16,8 @@ urlpatterns = patterns(
 
     url(r'^$', views.IndexView.as_view(), name='index'),
     url(r'^search/$', views.search, name='search'),
-    url(r'^(?P<pk>\d+)/$', views.DetailView.as_view(), name='detail'),
+    url(r'^collaborator/(?P<pk>\d+)/$', views.CollaboratorView.as_view(), name='collaborator'),
+    url(r'^institution/(?P<pk>\d+)/$', views.InstitutionView.as_view(), name='institution'),
+    url(r'^role/(?P<pk>\d+)/$', views.RoleView.as_view(), name='role'),
+    url(r'^export/(?P<filename>[-\.\w]*)$', views.export, name='export'),
 )

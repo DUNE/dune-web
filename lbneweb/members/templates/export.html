@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}LBNE Collaboration{% endblock %}
+
+{% block content %}
+
+<h2>Export Files</h2>
+
+These are generated dynamically from the current database.
+<h3>LaTeX</h3>
+<ul>
+<li><a href="{{ SITE_ROOT }}/members/export/revtex.tex">revtex.tex</a></li>  RevTeX4 payload
+<li><a href="{{ SITE_ROOT }}/members/export/revtex.tex">main-revtex.tex</a></li> simple main document containing the above payload
+</ul>
+
+<h3>XLS</h3>
+<ul>
+<li><a href="{{ SITE_ROOT }}/members/export/lbneauthors.xls">lbneauthors.xls</a></li> spreadsheet for Gnumeric, Libre/Open Office and others
+</ul>
+
+{% endblock %}

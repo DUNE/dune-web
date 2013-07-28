@@ -1,5 +1,4 @@
 <div>
-  <h2> Hi, wanna search for something?</h2>
   <form action="/members/search/" method="post">{% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Submit" />
