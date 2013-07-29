@@ -15,7 +15,7 @@ conf = SafeConfigParser()
 conf.read(conf_file)
 
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -102,7 +102,7 @@ SECRET_KEY = conf.get('common', 'secret_key', raw=True)
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -124,7 +124,9 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+
     os.path.join(PROJECT_PATH, 'templates'),
+    '/usr/lib/python2.6/site-packages/django/contrib/admin/templates/admin',
 )
 
 INSTALLED_APPS = (

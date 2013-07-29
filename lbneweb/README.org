@@ -6,31 +6,43 @@ Currently, it provides searching and browsing a database of Individuals, Institu
 
 * Installation
 
-Download the code to the server using one of the following git URLs:
-
- - read-only :: http://cdcvs.fnal.gov/projects/lbne-web
- - read-write :: =ssh://p-lbne-web@cdcvs.fnal.gov/cvs/projects/lbne-web=
-
-The application source is under the =lbneweb/= directory.  The django project is then under =lbne/= and the following django applications exist:
-
- - =members/= :: collaboration/project membership
-
-** Support packages
+** Prepare the server
 
 Obviously django is needed and in addition a few extra packages.  It's recommended to install django as a system package and the rest under a virtualenv. 
 
 #+BEGIN_SRC sh :eval no
 $ sudo apt-get install django virtualenv
+# as user django
+$ cd /srv/www
 $ virtualenv --system-site-packages venv
 $ source venv/bin/activate
-(venv)$ pip install django_extensions Werkzeug south ipython
+(venv)$ pip install django_extensions Werkzeug south ipython xlwt
 $ deactivate
-$ cd lbneweb/
+$ mkdir -p /srv/www/django/lbneweb/
+$ cd /srv/www/django/lbneweb/
 $ ln -s ../venv/lib/python2.7/site-packages .
 #+END_SRC
 
 Note, the app does not run in the virtualenv explicitly but finds the packages through the symlinked directory.
 
+** Source code
+
+Download the code to the deployment host using one of the following git URLs:
+
+ - read-only :: http://cdcvs.fnal.gov/projects/lbne-web
+ - read-write :: =ssh://p-lbne-web@cdcvs.fnal.gov/cvs/projects/lbne-web=
+
+The application source is under the =lbneweb/= directory.  
+
+** Deploy the project
+
+Don't edit flies on the server.  Edit them from a cloned repository and use Fabric and the provided=fabfile.py= to deploy. The deployment basically involves an =rsync= of the source to the server
+
+#+BEGIN_SRC sh :eval no
+$ cd /path/to/source/lbne-web/lbneweb
+$ emacs fabfile.py
+$ fab deploy
+#+END_SRC
 
 ** Configuration
 
@@ -80,6 +92,10 @@ Beat on the wound until the blood runs clear then run:
 $ ./manage.py runscript load_members --script-args "purge roles members"
 #+END_SRC
 
+*** Copy the DB
+
+If Sqlite3 is used then an existing =lbneweb.sqlite3= file can simple be copied into place under =lbneweb/=.
+
 ** Testing
 
 The database can be examined interactively.  For example:
@@ -99,12 +115,40 @@ print me.begin_date
 
 * Run the server
 
-The server is started with:
+You can run the app from the server provided by =manage.py= or in a full-blown Apache via WSGI.
+
+** Testing server
+
+The a testing server can be started with:
 
 #+BEGIN_SRC sh :eval no
 $ ./manage.py runserver_plus
 #+END_SRC
 
+This starts on a non-standard port.  To view remotely you may need:
+
+#+BEGIN_SRC sh :eval no
+ssh -L 8000:localhost:8000 django@lbne.bnl.gov
+#+END_SRC
+
+** Apache + WSGI
+
+To run under Apache + WSGI you need some configuration like:
+
+#+BEGIN_SRC xml 
+WSGIDaemonProcess django processes=2 threads=15 display-name=%{GROUP}
+
+WSGIImportScript /srv/www/django/lbneweb/python/lbneweb.wsgi process-group=django application-group=%{GLOBAL}
+WSGIScriptAlias /web /srv/www/django/lbneweb/python/lbneweb.wsgi
+
+Alias /media/ /srv/www/django/lbneweb/media/
+<Directory /srv/www/django/lbneweb/python>
+  Order allow,deny
+  Allow from all
+</Directory>
+#+END_SRC
+
+The file =lbneweb/python/lbneweb.wsgi= may need adjusting.
 
 * Create new applications
 

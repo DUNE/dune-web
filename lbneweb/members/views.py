@@ -104,12 +104,18 @@ def export(request, filename):
     if not filename:
         filename = 'export.html'
     member_list = Individual.objects.select_related().filter(collaborator=True)
+    inst_list = set([m.institution for m in member_list]),
 
     if filename.endswith('.xls'):
         wb = members_to_xls(member_list)
         return xls_to_response(wb, filename)
 
+    content_type = 'text/html'
+    if filename.endswith('.tex'):
+        content_type = 'application/x-latex'
+
     return render(request, filename,
-                  dict(inst_list = set([m.institution for m in member_list]),
-                       member_list = member_list))
+                  dict(inst_list = inst_list,
+                       member_list = member_list),
+                  content_type = content_type)
     
