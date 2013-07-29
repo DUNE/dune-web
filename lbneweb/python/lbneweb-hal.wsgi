@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import os, sys
-path = '/srv/www/django/lbneweb'
+path = '/home/bv/work/lbne/web/lbneweb'
 if path not in sys.path:
     sys.path.append(path)
-sys.path.append('/srv/www/venv/lib/python2.6/site-packages')
+sys.path.append('/home/bv/work/lbne/web/venv/lib/python2.7/site-packages')
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'lbne.settings'
 
