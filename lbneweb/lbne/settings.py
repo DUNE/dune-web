@@ -21,6 +21,8 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
+    ('Brett Viren', 'bv@bnl.gov'),
+
 )
 
 MANAGERS = ADMINS
@@ -69,6 +71,8 @@ MEDIA_ROOT = os.path.join(PROJECT_BASE, 'uploads')
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = '/uploads/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
+
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -203,7 +207,7 @@ else:
     SITE_LOCAL = True
 
 if SITE_BNL:
-    DEBUG = TEMPLATE_DEBUG = False
+    DEBUG = TEMPLATE_DEBUG = True
     SITE_ROOT = '/web'
     DEFAULT_FROM_EMAIL = 'www@lbne.bnl.gov'
 
@@ -211,5 +215,6 @@ elif SITE_LOCAL:
     DEBUG = TEMPLATE_DEBUG = True
     SITE_ROOT = '/web'
     DEFAULT_FROM_EMAIL = 'www@localhost'
+
 
 VERSION='0.2.0'

@@ -15,10 +15,12 @@ def deploy(dryrun=False):
     else: 
         dry_run = ''
     
+    exclude = ['.git/', '.svn/', '.htaccess', '*.pyc', '*~']
+    exclude.append('*.sqlite3')
     rsync_project(
         remote_dir='/srv/www/django/',
         # remote_dir='~/test/',
-        exclude=('.git/', '.svn/', '.htaccess', '*.pyc', '*.sqlite3', '*~'),
+        exclude=exclude,
         extra_opts='--update' + dry_run,
     )
 
