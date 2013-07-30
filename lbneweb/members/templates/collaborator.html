@@ -11,13 +11,20 @@
     </li>
     <li>{{ member.email }}</li>
     <li>{{ member.phone }}</li>
+    <li>Roles:</li>
+    <ul>
     {% for role in member.role.all %}
-    <li>{{ role.desc }}</li>
+    <li>{{ role.desc }} [<a alt="{{ role.desc }}" href="{{ role.get_absolute_url }}">{{ role.name }}</a>]</li>
     {% endfor %}
+    </ul>
     {% if member.begin_date %}
     <li>Date Joined: {{ member.begin_date }}</li>
     {% endif %}
+    {% if "members.change_individual" in perms %}
+    <li> <a href="{{ SITE_ROOT }}/admin/members/individual/{{ member.id }}">[edit]</a></li>
+    {% endif %}
   </ul>
 </p>
+
 
 {% endblock %}

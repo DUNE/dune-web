@@ -4,6 +4,9 @@
 {% block content %}
 
 <h2>{{ member.name }}: {{ member.desc }}</h2>
+{% if "members.change_role" in perms %}
+<a href="{{ SITE_ROOT }}/admin/members/role/{{ member.id }}">[edit]</a>
+{% endif %}
 <p>
   <ul>
     {% for ind in member.individual_set.all %}
