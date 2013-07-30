@@ -20,7 +20,7 @@
     {% if member.begin_date %}
     <li>Date Joined: {{ member.begin_date }}</li>
     {% endif %}
-    {% if "members.change_individual" in perms %}
+    {% if perms.members.change_individual %}
     <li> <a href="{{ SITE_ROOT }}/admin/members/individual/{{ member.id }}">[edit]</a></li>
     {% endif %}
   </ul>

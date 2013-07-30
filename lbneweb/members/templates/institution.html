@@ -8,7 +8,7 @@
   <ul>
     <li>Short name: {{ member.short_name }}</li>
     <li>Address: {{ member.address }}</li>
-    {% if "members.change_institution" in perms %}
+    {% if perms.members.change_institution %}
     <li> <a href="{{ SITE_ROOT }}/admin/members/institution/{{ member.id }}">[edit]</a></li>
     {% endif %}
   </ul>
