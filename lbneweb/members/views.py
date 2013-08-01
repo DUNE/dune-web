@@ -100,11 +100,17 @@ def members_to_xls(member_list):
     return wb
 
 
+def inst_name_order(inst):
+    name = inst.full_name.upper()
+    if name.startswith('UNIV. OF '):
+        return name[len('UNIV. OF '):]
+    return name
+
 def export(request, filename):
     if not filename:
         filename = 'export.html'
     member_list = Individual.objects.select_related().filter(collaborator=True)
-    inst_list = set([m.institution for m in member_list]),
+    inst_list = sorted(set([m.institution for m in member_list]), key=inst_name_order)
 
     if filename.endswith('.xls'):
         wb = members_to_xls(member_list)
@@ -113,6 +119,8 @@ def export(request, filename):
     content_type = 'text/html'
     if filename.endswith('.tex'):
         content_type = 'application/x-latex'
+    if filename.endswith('.txt'):
+        content_type = 'text/plain'
 
     return render(request, filename,
                   dict(inst_list = inst_list,

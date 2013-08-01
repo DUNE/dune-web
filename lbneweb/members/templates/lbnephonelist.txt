@@ -1,0 +1,7 @@
+(F = Faculty; P = Postdoc; E = Engineer; S = Student)			
+
+{% for inst in inst_list %}{{ inst.full_name|safe|upper }}; {{ inst.address }}
+{% for indi in inst.individual_set.all %}   {{indi.full_name|safe|stringformat:'-20s'}} - {{indi.career}} 	{{indi.email}} 	{{indi.phone}}   
+{% endfor %}
+{% endfor %}
+
