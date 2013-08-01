@@ -1,0 +1,5 @@
+{% for inst in inst_list %}{{ inst.full_name|safe|upper }}
+{% for indi in inst.individual_set.all %}   {{indi.full_name|safe}}    {{indi.IBR}}   
+{% endfor %}
+{% endfor %}
+
