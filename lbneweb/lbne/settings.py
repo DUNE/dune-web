@@ -196,7 +196,8 @@ LOGGING = {
 # a symbolic link to the pip site-packages
 site_packages_dir = os.path.join(PROJECT_BASE,'site-packages')
 assert os.path.exists(site_packages_dir)
-sys.path.insert(0, site_packages_dir)
+if site_packages_dir not in sys.path:
+    sys.path.insert(0, site_packages_dir)
 
 # site specific settings
 SITE_LOCAL = SITE_BNL = False

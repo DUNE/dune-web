@@ -1,6 +1,10 @@
 #+title: LBNE Member Web App
 
-This django web application manages contact information about LBNE collaboration and project members.  It was written by Brett Viren (=bv@bnl.gov=), improved by Chao Zheng (=chao@bnl.gov=) and then upgraded to recent version of django and now maintained by Brett Viren.
+This django web application manages contact information about LBNE collaboration and project members.  It is running at:
+
+https://lbne.bnl.gov/web
+
+It was written by Brett Viren (=bv@bnl.gov=), improved by Chao Zheng (=chao@bnl.gov=) and then upgraded to recent version of django and now maintained by Brett Viren.
 
 Currently, it provides searching and browsing a database of Individuals, Institutions and Roles and can export the database in a variety of formats including plain text, LaTeX and XLS.
 
@@ -140,6 +144,7 @@ WSGIDaemonProcess django processes=2 threads=15 display-name=%{GROUP}
 
 WSGIImportScript /srv/www/django/lbneweb/python/lbneweb.wsgi process-group=django application-group=%{GLOBAL}
 WSGIScriptAlias /web /srv/www/django/lbneweb/python/lbneweb.wsgi
+WSGIProcessGroup django 
 
 Alias /media/ /srv/www/django/lbneweb/media/
 <Directory /srv/www/django/lbneweb/python>
