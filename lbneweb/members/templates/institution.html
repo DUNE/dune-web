@@ -6,6 +6,7 @@
 <h2>{{ member.full_name }}</h2>
 <p>
   <ul>
+    <li>Tag name: {{ member.tag_name }}</li>
     <li>Short name: {{ member.short_name }}</li>
     <li>Address: {{ member.address }}</li>
     {% if perms.members.change_institution %}

@@ -214,7 +214,7 @@ if SITE_BNL:
 
 elif SITE_LOCAL:
     DEBUG = TEMPLATE_DEBUG = True
-    SITE_ROOT = ''
+    SITE_ROOT = '/web'
     DEFAULT_FROM_EMAIL = 'www@localhost'
 
 

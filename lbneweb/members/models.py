@@ -43,6 +43,15 @@ class Institution(models.Model):
         fields = [ x.strip() for x in self.address.split(',') ][-2:]
         return ', '.join(fields)        
 
+    def latex_name(self):
+        return self.full_name.replace('&','\&')
+
+    def tag_name(self):
+        tn = self.short_name
+        for die in "(-.,& )":
+            tn = tn.replace(die,'')
+        return tn
+
 class Individual(models.Model):
     'Information about an individual'
 

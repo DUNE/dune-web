@@ -100,6 +100,18 @@ def members_to_xls(member_list):
     return wb
 
 
+import os
+from latexer import process_latex
+def latex_response(pdffile, context):
+    print pdffile
+    texfile = os.path.splitext(pdffile)[0]+'.tex'
+    pdf = process_latex(texfile, context)
+    response = HttpResponse(mimetype="application/pdf")
+    response['Content-Disposition'] = 'attachment; filename=%s' % pdffile
+    response.write(pdf)
+    return response
+
+
 def inst_name_order(inst):
     name = inst.full_name.upper()
     if name.startswith('UNIV. OF '):
@@ -111,19 +123,21 @@ def export(request, filename):
         filename = 'export.html'
     member_list = Individual.objects.select_related().filter(collaborator=True)
     inst_list = sorted(set([m.institution for m in member_list]), key=inst_name_order)
+    context = dict(inst_list = inst_list, member_list = member_list)
 
     if filename.endswith('.xls'):
-        wb = members_to_xls(member_list)
+        wb = members_to_xls(member_list) # fixme: pass context
         return xls_to_response(wb, filename)
+
+    if filename.endswith('.pdf'):
+        return latex_response(filename, context)
 
     content_type = 'text/html'
     if filename.endswith('.tex'):
-        content_type = 'application/x-latex'
+        content_type = 'text/plain'
     if filename.endswith('.txt'):
         content_type = 'text/plain'
 
-    return render(request, filename,
-                  dict(inst_list = inst_list,
-                       member_list = member_list),
+    return render(request, filename, context,
                   content_type = content_type)
     
