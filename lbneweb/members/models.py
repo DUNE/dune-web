@@ -58,8 +58,8 @@ class Individual(models.Model):
     # these duplicate what is in User, but want way to look up this record
     first_name = models.CharField('First Name',max_length=64)
     last_name = models.CharField('Last Name',max_length=64)
-    email = models.EmailField()
-    phone = models.CharField(max_length=64)
+    email = models.EmailField(blank=True)
+    phone = models.CharField(max_length=64, blank=True)
     collaborator = models.BooleanField()
     begin_date = models.DateField(max_length=50, default=datetime(2008,5,1))
     end_date = models.DateField(max_length=50, default=datetime(2038,5,1))
