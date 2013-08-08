@@ -1,0 +1,13 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans 'Django site admin' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'LBNE Collaboration Web App Administration' %}</h1>
+<ul>
+<li><a href="{{ SITE_ROOT }}/">[back to the site]</a>
+</ul>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
