@@ -114,8 +114,10 @@ def latex_response(pdffile, context):
 
 def inst_name_order(inst):
     name = inst.full_name.upper()
-    if name.startswith('UNIV. OF '):
-        return name[len('UNIV. OF '):]
+    for ignore in ['UNIV. OF', 'UNIVERSITY COLLEGE', 'COLLEGE OF']:
+        ignore += ' '
+        if name.startswith(ignore):
+            return name[len(ignore):]
     return name
 def last_name_order(indi):
     return (indi.last_name.lower(), indi.first_name.lower())
