@@ -117,11 +117,13 @@ def inst_name_order(inst):
     if name.startswith('UNIV. OF '):
         return name[len('UNIV. OF '):]
     return name
+def last_name_order(indi):
+    return (indi.last_name.lower(), indi.first_name.lower())
 
 def export(request, filename):
     if not filename:
         filename = 'export.html'
-    member_list = Individual.objects.select_related().filter(collaborator=True)
+    member_list = sorted(Individual.objects.select_related().filter(collaborator=True), key=last_name_order)
     inst_list = sorted(set([m.institution for m in member_list]), key=inst_name_order)
     context = dict(inst_list = inst_list, member_list = member_list)
 
