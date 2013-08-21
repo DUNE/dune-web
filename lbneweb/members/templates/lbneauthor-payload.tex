@@ -11,7 +11,7 @@
 {% endfor %}
 
 
-{% for member in member_list %}\author{% templatetag openbrace %}{{member.first_name_initial}}~{{member.last_name.split|join:"~"}}{% templatetag closebrace %}
+{% for member in member_list %}\author{% templatetag openbrace %}{{member.initials_last_name.split|join:"~"}}{% templatetag closebrace %}
 \affiliation{% templatetag openbrace %}\{{ member.institution.tag_name }}{% templatetag closebrace %}
 {% endfor %}
 

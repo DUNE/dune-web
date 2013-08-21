@@ -68,7 +68,7 @@ class Individual(models.Model):
     # docdb_id = models.IntegerField(blank=True,null=True)
     # user = models.OneToOneField(User,null=True,blank=True,default=None)
     class Meta:
-        ordering = ['institution', 'last_name', 'first_name']
+        ordering = ['last_name', 'first_name']
     
     def __unicode__(self):
         return self.first_name +' '+ self.last_name
@@ -83,6 +83,10 @@ class Individual(models.Model):
     def first_name_initial(self):
         return self.first_name[0] + '.'
             
+    def initials_last_name(self):
+        initials = '. '.join([x[0] for x in self.first_name.split()]) + '.'
+        return initials + ' ' + self.last_name
+
     def roles(self):
         rs = ''
         for obj in self.role.all():

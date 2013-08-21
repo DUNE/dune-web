@@ -103,7 +103,7 @@ def members_to_xls(member_list):
 import os
 from latexer import process_latex
 def latex_response(pdffile, context):
-    print pdffile
+    #print pdffile
     texfile = os.path.splitext(pdffile)[0]+'.tex'
     pdf = process_latex(texfile, context)
     response = HttpResponse(mimetype="application/pdf")
