@@ -45,7 +45,7 @@ def process_latex(template, context={}, type='pdf', outfile=None):
     with tempdir(cd=True, delete = False) as td:
         print 'Tempdir:',td
         with open(infn,'w') as tex:
-            tex.write(r)
+            tex.write(r.encode('utf-8'))
 
         call(['pdflatex', '-interaction=nonstopmode', '-output-format', type, name],
              stdout=PIPE, stderr=PIPE)

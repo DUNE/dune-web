@@ -138,9 +138,9 @@ def export(request, filename):
 
     content_type = 'text/html'
     if filename.endswith('.tex'):
-        content_type = 'text/plain'
+        content_type = 'text/plain; charset=utf-8'
     if filename.endswith('.txt'):
-        content_type = 'text/plain'
+        content_type = 'text/plain; charset=utf-8'
 
     return render(request, filename, context,
                   content_type = content_type)

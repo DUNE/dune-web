@@ -222,3 +222,4 @@ elif SITE_LOCAL:
 
 
 VERSION='0.2.0'
+DEFAULT_CHARSET = 'utf-8'

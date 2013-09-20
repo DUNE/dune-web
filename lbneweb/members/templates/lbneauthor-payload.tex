@@ -2,6 +2,7 @@
   \textbf{The LBNE Collaboration}
 \end{center}
 
+{% autoescape off %}
 
 {% for inst in inst_list %}\newcommand{% templatetag openbrace %}\{{inst.tag_name}}{% templatetag closebrace %}{% templatetag openbrace %}{{ inst.latex_name }}, {{ inst.address_short }}{% templatetag closebrace %}
 {% endfor %}
@@ -15,3 +16,4 @@
 \affiliation{% templatetag openbrace %}\{{ member.institution.tag_name }}{% templatetag closebrace %}
 {% endfor %}
 
+{% endautoescape %}
