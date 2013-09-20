@@ -65,8 +65,12 @@ class Individual(models.Model):
     end_date = models.DateField(max_length=50, default=datetime(2038,5,1))
     institution = models.ForeignKey(Institution)
     role = models.ManyToManyField(Role)
-    # docdb_id = models.IntegerField(blank=True,null=True)
-    # user = models.OneToOneField(User,null=True,blank=True,default=None)
+    nick = models.CharField('Nickname', max_length=64, default='',blank=True, null=True)
+    docdb_id = models.IntegerField(blank=True, null=True)
+    email2 = models.EmailField(blank=True, null=True, default='')
+    phone2 = models.CharField(max_length=64, blank=True, null=True)
+    institution2 = models.ForeignKey(Institution, related_name='institution2', blank=True, null=True)
+
     class Meta:
         ordering = ['last_name', 'first_name']
     
