@@ -29,6 +29,8 @@ class Institution(models.Model):
     short_name = models.CharField(max_length=64)
     full_name =  models.CharField(max_length=1024)
     address =  models.TextField(null=True, blank=True)
+    sort_name = models.CharField(max_length=1024,null=True,blank=True)
+    country = models.CharField(max_length=128,null=True,blank=True) # sorry Thailand
     
     class Meta:
         ordering = ['full_name', ]
@@ -52,6 +54,9 @@ class Institution(models.Model):
             tn = tn.replace(die,'')
         return tn
 
+    def get_sort_name(self):
+        return self.sort_name or self.full_name
+
 class Individual(models.Model):
     'Information about an individual'
 
@@ -70,6 +75,8 @@ class Individual(models.Model):
     email2 = models.EmailField(blank=True, null=True, default='')
     phone2 = models.CharField(max_length=64, blank=True, null=True)
     institution2 = models.ForeignKey(Institution, related_name='institution2', blank=True, null=True)
+    fax = models.CharField(max_length=64, blank=True)
+    latex_name = models.CharField(max_length=128, blank=True, null=True)
 
     class Meta:
         ordering = ['last_name', 'first_name']
@@ -115,3 +122,5 @@ class Individual(models.Model):
                 return obj.name
         return 'U'    
         
+    def get_latex_name(self):
+        return self.latex_name or self.initials_last_name()
