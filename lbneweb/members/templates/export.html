@@ -15,13 +15,28 @@ These are generated dynamically from the current database.
 
 <h3>LaTeX</h3>
 <ul>
-<li><a href="{{ SITE_ROOT }}/members/export/lbneauthor-payload.tex">lbneauthor-payload.tex</a></li>  Just the author list
-<li><a href="{{ SITE_ROOT }}/members/export/lbneauthor.tex">lbneauthor.tex</a></li> the above author list plus main document parts.
+<li>LaTeX using the 
+<a href="http://www.ctan.org/pkg/authblk">authblk</a> 
+package: as a stand-alone 
+<a href="{{ SITE_ROOT }}/members/export/lbneauthor-main-authblk.tex">main</a> 
+file or just the 
+<a href="{{ SITE_ROOT }}/members/export/lbneauthor-payload-authblk.tex">payload</a>
+file.
+<li>LaTeX using the 
+<a href="http://www.ctan.org/pkg/revtex4-1">revtex4</a> 
+package: as a stand-alone 
+<a href="{{ SITE_ROOT }}/members/export/lbneauthor-main-revtex4.tex">main</a> 
+file or just the 
+<a href="{{ SITE_ROOT }}/members/export/lbneauthor-payload-revtex4.tex">payload</a>
+file.
 </ul>
 
 <h3>PDF</h3>
 <ul>
-<li><a href="{{ SITE_ROOT }}/members/export/lbneauthor.pdf">lbneauthor.pdf</a></li> compiled version of the LaTeX.
+<li>Built version of 
+<a href="{{ SITE_ROOT }}/members/export/lbneauthor-main-authblk.pdf">authblk version</a>  of the above LaTeX.</li>
+<li>Built version of 
+<a href="{{ SITE_ROOT }}/members/export/lbneauthor-main-revtex4.pdf">revtex4 version</a>  of the above LaTeX</li>
 </ul>
 
 <h3>XLS</h3>

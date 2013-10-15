@@ -1,0 +1,16 @@
+% The LBNE author list in authblk format, using "method #3".
+% This file was generated on {% now "DATETIME_FORMAT" %}
+% Retrieved from: {{ request.get_host }}{{ request.get_full_path }}
+% Avoid editing this file!  Instead visit the site above and/or contact 
+% its "webmaster" for assistance.
+
+{% autoescape off %}
+
+{% for member in member_list %}\author[{{ member.institution.id }}]{% templatetag openbrace %}{{member.initials_last_name.split|join:"~"}}{% templatetag closebrace %}
+{% endfor %}
+
+{% for inst in inst_list %}
+\affil[{{ inst.id }}]{% templatetag openbrace %}{{inst.latex_name}}{% templatetag closebrace %}
+{% endfor %}
+
+{% endautoescape %}
