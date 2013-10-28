@@ -90,7 +90,7 @@ def serialize_members(member_list):
     Return a list of namedtuples of member info.
     '''
     serialized_members = serializers.serialize( "python", member_list)
-    colnames = serialized_members[0]['fields'].keys()
+    colnames = serialized_members[0]['fields'].keys() + ['country']
     inst_ind = colnames.index('institution')
     role_ind = colnames.index('role')
     MemberRow = namedtuple('MemberRow',colnames)
@@ -100,6 +100,7 @@ def serialize_members(member_list):
         row = list(mem['fields'].values())
         row[inst_ind] = memobj.institution.full_name
         row[role_ind] = ','.join([r.name for r in memobj.role.all()])
+        row.append(memobj.institution.country)
         ret.append(MemberRow(*row))
     return ret
     
