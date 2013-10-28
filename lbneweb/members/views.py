@@ -86,7 +86,7 @@ def xls_to_response(xls, fname):
 from django.core import serializers
 def members_to_xls(member_list):
     import xlwt
-    wb = xlwt.Workbook()
+    wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Collaborators')
 
     members = serializers.serialize( "python", member_list)
@@ -96,7 +96,10 @@ def members_to_xls(member_list):
                 ws.write(irow, icol, name)
         irow += 1
         for icol, value in enumerate(mem['fields'].values()):
-            ws.write(irow, icol, str(value))
+            #string = str(value)
+            #ustring = string.encode('UTF-8')
+            ustring = unicode(value)
+            ws.write(irow, icol, ustring)
     return wb
 
 
