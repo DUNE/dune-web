@@ -203,20 +203,17 @@ assert os.path.exists(site_packages_dir)
 if site_packages_dir not in sys.path:
     sys.path.insert(0, site_packages_dir)
 
-# site specific settings
-SITE_LOCAL = SITE_BNL = False
 
 if THIS_SERVER_NAME.startswith('lbne'):
-    SITE_BNL = True
-else:
-    SITE_LOCAL = True
-
-if SITE_BNL:
     DEBUG = TEMPLATE_DEBUG = True
     SITE_ROOT = '/web'
     DEFAULT_FROM_EMAIL = 'www@lbne.bnl.gov'
 
-elif SITE_LOCAL:
+elif THIS_SERVER_NAME.startswith('localhost') or THIS_SERVER_NAME.startswith('127'):
+    DEBUG = TEMPLATE_DEBUG = True
+    SITE_ROOT = '/'
+    DEFAULT_FROM_EMAIL = 'www@localhost'
+else:
     DEBUG = TEMPLATE_DEBUG = True
     SITE_ROOT = '/web'
     DEFAULT_FROM_EMAIL = 'www@localhost'

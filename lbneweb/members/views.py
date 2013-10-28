@@ -84,7 +84,44 @@ def xls_to_response(xls, fname):
     return response
 
 from django.core import serializers
+from collections import namedtuple
+def serialize_members(member_list):
+    '''
+    Return a list of namedtuples of member info.
+    '''
+    serialized_members = serializers.serialize( "python", member_list)
+    colnames = serialized_members[0]['fields'].keys()
+    inst_ind = colnames.index('institution')
+    role_ind = colnames.index('role')
+    MemberRow = namedtuple('MemberRow',colnames)
+    ret = list()
+    for irow, mem in enumerate(serialized_members):
+        memobj = member_list[irow]
+        row = list(mem['fields'].values())
+        row[inst_ind] = memobj.institution.full_name
+        row[role_ind] = ','.join([r.name for r in memobj.role.all()])
+        ret.append(MemberRow(*row))
+    return ret
+    
 def members_to_xls(member_list):
+    import xlwt
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Collaborators')
+
+    members = serialize_members(member_list)
+    for irow,mem in enumerate(members):
+        if irow == 0:
+            for icol, name in enumerate(mem._fields):
+                ws.write(irow, icol, name)
+        irow += 1
+        for icol, value in enumerate(mem):
+            #string = str(value)
+            #ustring = string.encode('UTF-8')
+            ustring = unicode(value)
+            ws.write(irow, icol, ustring)
+    return wb
+
+def old_members_to_xls(member_list):
     import xlwt
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Collaborators')
