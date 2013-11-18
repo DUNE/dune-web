@@ -29,8 +29,12 @@ def unicode_to_latex(tt = None, filename = None):
     return tt
 
 def ascii_to_latex(tt = None):
+    '''
+    Do additional patch up
+    '''
     tt = tt or dict()
     tt[ord('&')] = unicode(r'\&')
+    tt[ord(u"í")] = unicode(r'\textasciiacute\i')
     return tt
 
 def translation_table():
@@ -43,6 +47,7 @@ def test():
         (u"été & à l'eau", r"\'et\'e \& \`a l'eau"),
         (u"Sérgio", r"S\'ergio"),
         (u"Poços", r"Po\c cos"),
+        (u"Físicas", r"F\textasciiacute\isicas")
         ]
     for start, want in data:
         got = start.translate(translation_table())
