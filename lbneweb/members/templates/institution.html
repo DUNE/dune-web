@@ -9,6 +9,7 @@
     <li>Tag name: {{ member.tag_name }}</li>
     <li>Short name: {{ member.short_name }}</li>
     <li>Address: {{ member.address }}</li>
+    <li>Country: {{ member.country }}</li>
     {% if perms.members.change_institution %}
     <li> <a href="{{ SITE_ROOT }}/admin/members/institution/{{ member.id }}">[edit]</a></li>
     {% endif %}
