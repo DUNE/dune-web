@@ -6,11 +6,11 @@
 
 {% autoescape off %}
 
-{% for member in member_list %}\author[{{ member.institution.id }}]{% templatetag openbrace %}{{member.initials_last_name.split|join:"~"}}{% templatetag closebrace %}
+{% for member in member_list %}\author[{{ member.institution.id }}]{% templatetag openbrace %}{{member.get_latex_name}}{% templatetag closebrace %}
 {% endfor %}
 
 {% for inst in inst_list %}
-\affil[{{ inst.id }}]{% templatetag openbrace %}{{inst.latex_name}}{% templatetag closebrace %}
+\affil[{{ inst.id }}]{% templatetag openbrace %}{{inst.get_latex_name}}{% templatetag closebrace %}
 {% endfor %}
 
 {% endautoescape %}

@@ -2,6 +2,9 @@ from django.db import models
 from django.conf import settings
 from datetime import datetime
 
+from . import uni2latex
+uni2latex_tt = uni2latex.translation_table()
+
 '''
 Example roles
 
@@ -45,8 +48,12 @@ class Institution(models.Model):
         fields = [ x.strip() for x in self.address.split(',') ][-2:]
         return ', '.join(fields)        
 
-    def latex_name(self):
-        return self.full_name.replace('&','\&')
+    def get_latex_address_short(self):
+        addr = self.address_short()
+        return addr.translate(uni2latex_tt)
+
+    def get_latex_name(self):
+        return self.full_name.translate(uni2latex_tt)
 
     def tag_name(self):
         tn = self.short_name
@@ -123,4 +130,7 @@ class Individual(models.Model):
         return 'U'    
         
     def get_latex_name(self):
-        return self.latex_name or self.initials_last_name()
+        name = self.latex_name or self.initials_last_name().translate(uni2latex_tt)
+        return name.strip().replace(' ','~')
+
+
