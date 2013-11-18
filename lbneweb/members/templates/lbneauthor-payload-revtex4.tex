@@ -4,7 +4,7 @@
 
 {% autoescape off %}
 
-{% for inst in inst_list %}\newcommand{% templatetag openbrace %}\{{inst.tag_name}}{% templatetag closebrace %}{% templatetag openbrace %}{{ inst.get_latex_name }}, {{ inst.get_latex_address_short }}{% templatetag closebrace %}
+{% for inst in inst_list %}\newcommand{% templatetag openbrace %}\{{inst.tag_name}}{% templatetag closebrace %}{% templatetag openbrace %}{{ inst.get_latex_name }}, {{ inst.get_latex_address_short }}, {{ inst.country }}{% templatetag closebrace %}
 {% endfor %}
 
 {% for inst in inst_list %}
