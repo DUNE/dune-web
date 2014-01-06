@@ -34,7 +34,7 @@ def ascii_to_latex(tt = None):
     '''
     tt = tt or dict()
     tt[ord('&')] = unicode(r'\&')
-    tt[ord(u"í")] = unicode(r'\textasciiacute\i')
+    tt[ord(u"í")] = unicode(r"\'{i}")
     return tt
 
 def translation_table():
