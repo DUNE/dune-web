@@ -154,6 +154,8 @@ def latex_response(pdffile, context):
 
 
 def inst_name_order(inst):
+    if inst.sort_name:
+        return inst.sort_name
     name = inst.full_name.upper()
     for ignore in ['UNIV. OF', 'UNIVERSITY COLLEGE', 'COLLEGE OF']:
         ignore += ' '
