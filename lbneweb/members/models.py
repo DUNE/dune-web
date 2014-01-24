@@ -133,4 +133,15 @@ class Individual(models.Model):
         name = self.latex_name or self.initials_last_name().translate(uni2latex_tt)
         return name.strip().replace(' ','~')
 
-
+    def is_active(self, when = None):
+        '''
+        Return True if the individual was active with the collaboration on
+        the given date (a datetime object).  If no date is given, "now" is used.
+        '''
+        if when is None:
+            when = datetime.now().date()
+        if self.begin_date > when:
+            return False
+        if self.end_date < when:
+            return False
+        return True

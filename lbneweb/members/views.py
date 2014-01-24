@@ -3,8 +3,8 @@ from django.views import generic
 from django.db.models import Q
 
 from members.models import Individual, Institution, Role
-from members.forms import SearchMemberListForm
-
+from members.forms import SearchMemberListForm, ExportFilesForm
+from datetime import datetime
 
 class IndexView(generic.ListView):
     model = Individual
@@ -39,6 +39,10 @@ class RoleView(generic.DetailView):
     template_name = 'role.html'
     context_object_name = 'member'
 
+def active_members_filter(query, date = None):
+    keep_ids = [m.id for m in query if m.is_active(date)]
+    return query.filter(id__in = keep_ids)
+
 def search(request):
     member_list = Individual.objects.select_related().filter(collaborator=True)
     
@@ -55,6 +59,9 @@ def search(request):
                 name = form.cleaned_data['name']
                 member_list = member_list.filter( Q(last_name__icontains=name) 
                     | Q(first_name__icontains=name))          
+
+            member_list = active_members_filter(member_list, form.cleaned_data['date'])
+
         else:
             member_list = member_list.filter(id=0) # hack, no match
 
@@ -75,6 +82,7 @@ class SearchView(generic.edit.FormView):
     
     def form_valid(self, form):
         return super(SearchView, self).form_valid(form)
+
 
 from django.http import HttpResponse
 def xls_to_response(xls, fname):
@@ -165,12 +173,51 @@ def inst_name_order(inst):
 def last_name_order(indi):
     return (indi.last_name.lower(), indi.first_name.lower())
 
-def export(request, filename):
+def export(request, filename = None):
     if not filename:
         filename = 'export.html'
     member_list = sorted(Individual.objects.select_related().filter(collaborator=True), key=last_name_order)
     inst_list = sorted(set([m.institution for m in member_list]), key=inst_name_order)
     context = dict(inst_list = inst_list, member_list = member_list)
+
+    if filename.endswith('.xls'):
+        wb = members_to_xls(member_list) # fixme: pass context
+        return xls_to_response(wb, filename)
+
+    if filename.endswith('.pdf'):
+        return latex_response(filename, context)
+
+    content_type = 'text/html'
+    if filename.endswith('.tex'):
+        content_type = 'text/plain; charset=utf-8'
+    if filename.endswith('.txt'):
+        content_type = 'text/plain; charset=utf-8'
+
+    return render(request, filename, context,
+                  content_type = content_type)
+    
+def export2(request):
+    member_list = Individual.objects.select_related().filter(collaborator=True)
+
+    # form for filename and date
+    filename = 'export2.html'
+    now = datetime.now().date()
+    datestr = now.isoformat()
+    if request.method == 'POST':
+        form = ExportFilesForm(request.POST) # bound form
+        if form.is_valid():
+            date = form.cleaned_data['date'] or now
+            member_list = active_members_filter(member_list, date)
+            filename = form.cleaned_data['filename']
+            datestr = date.isoformat()
+        else:
+            member_list = active_members_filter(member_list)
+    else:
+        form = ExportFilesForm()
+
+    member_list = sorted([m for m in member_list], key=last_name_order)
+    inst_list = sorted(set([m.institution for m in member_list]), key=inst_name_order)
+    context = dict(inst_list = inst_list, member_list = member_list, date = datestr, form = form)
 
     if filename.endswith('.xls'):
         wb = members_to_xls(member_list) # fixme: pass context
