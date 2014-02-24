@@ -4,13 +4,16 @@
 % Avoid editing this file!  Instead visit the site above and/or contact 
 % its "webmaster" for assistance.
 
+{% load helpers %}
+
 {% autoescape off %}
 
-{% for member in member_list %}\author[{{ member.institution.id }}]{% templatetag openbrace %}{{member.get_latex_name}}{% templatetag closebrace %}
+
+{% for member in member_list %}\author[{{ inst_number|dictref:member.institution.id }}]{% templatetag openbrace %}{{member.get_latex_name}}{% templatetag closebrace %}
 {% endfor %}
 
 {% for inst in inst_list %}
-\affil[{{ inst.id }}]{% templatetag openbrace %}{{inst.get_latex_name}}, {{ inst.get_latex_address_short }}, {{ inst.country }}{% templatetag closebrace %}
+\affil[{{ inst_number|dictref:inst.id }}]{% templatetag openbrace %}{{inst.get_latex_name}}, {{ inst.get_latex_address_short }}, {{ inst.country }}{% templatetag closebrace %}
 {% endfor %}
 
 {% endautoescape %}

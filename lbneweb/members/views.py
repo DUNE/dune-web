@@ -173,12 +173,15 @@ def inst_name_order(inst):
 def last_name_order(indi):
     return (indi.last_name.lower(), indi.first_name.lower())
 
+
 def export(request, filename = None):
     if not filename:
         filename = 'export.html'
     member_list = sorted(Individual.objects.select_related().filter(collaborator=True), key=last_name_order)
     inst_list = sorted(set([m.institution for m in member_list]), key=inst_name_order)
-    context = dict(inst_list = inst_list, member_list = member_list)
+    inst_number = { inst.id:count+1 for count,inst in enumerate(inst_list) }
+
+    context = dict(inst_list = inst_list, inst_number = inst_number, member_list = member_list)
 
     if filename.endswith('.xls'):
         wb = members_to_xls(member_list) # fixme: pass context
