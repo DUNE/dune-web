@@ -33,11 +33,11 @@ class SearchMemberListForm(forms.Form):
         label='Name', required=False,
     )
     date = forms.DateField(
-        label='Active date (YYYY-MM-DD)', required=False, initial = datetime.date.today,
+        label='Active date (format: YYYY-MM-DD)', required=False, initial = datetime.date.today,
     )
 
 class ExportFilesForm(forms.Form):
-    filename = forms.ChoiceField(choices = [
+    filename = forms.ChoiceField(label = 'File type', choices = [
         ('lbneiblist.txt', 'IB List (text)'),
         ('lbnephonelist.txt', 'Phone List (text)'),
         ('lbneauthor-main-authblk.tex', 'Main LaTeX file (authblk)'),

@@ -1,47 +1,25 @@
 {% extends "base.html" %}
-{% block title %}LBNE Collaboration{% endblock %}
+{% block title %}Export LBNE Collaboration List{% endblock %}
+
+{% load staticfiles %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static "css/tablesorter.css" %}")?>
+{% endblock %}
 
 {% block content %}
 
-<h2>Export Files</h2>
-
-These are generated dynamically from the current database. 
-
-<h3>Text</h3>
+<h1> Export the LBNE collaboration list</h1>
 <ul>
-<li><a href="{{ SITE_ROOT }}/members/export/lbneiblist.txt">lbneiblist.txt</a></li>  per institution membership with IB representatives noted
-<li><a href="{{ SITE_ROOT }}/members/export/lbnephonelist.txt">lbnephonelist.txt</a></li>  per institution member contact info.
+  <li> The LBNE collaboration database can be exported into a number of different file
+types.  Select the desired one from the drop down list.  </li>
+  <li> Setting an "active date" will return the state of the collaboration on that date.  Leaving the date empty will ignore collaborator begin and end dates.</li>
 </ul>
 
-<h3>LaTeX</h3>
-<ul>
-<li>LaTeX using the 
-<a href="http://www.ctan.org/pkg/authblk">authblk</a> 
-package: as a stand-alone 
-<a href="{{ SITE_ROOT }}/members/export/lbneauthor-main-authblk.tex">main</a> 
-file or just the 
-<a href="{{ SITE_ROOT }}/members/export/lbneauthor-payload-authblk.tex">payload</a>
-file.
-<li>LaTeX using the 
-<a href="http://www.ctan.org/pkg/revtex4-1">revtex4</a> 
-package: as a stand-alone 
-<a href="{{ SITE_ROOT }}/members/export/lbneauthor-main-revtex4.tex">main</a> 
-file or just the 
-<a href="{{ SITE_ROOT }}/members/export/lbneauthor-payload-revtex4.tex">payload</a>
-file.
-</ul>
-
-<h3>PDF</h3>
-<ul>
-<li>Built version of 
-<a href="{{ SITE_ROOT }}/members/export/lbneauthor-main-authblk.pdf">authblk version</a>  of the above LaTeX.</li>
-<li>Built version of 
-<a href="{{ SITE_ROOT }}/members/export/lbneauthor-main-revtex4.pdf">revtex4 version</a>  of the above LaTeX</li>
-</ul>
-
-<h3>XLS</h3>
-<ul>
-<li><a href="{{ SITE_ROOT }}/members/export/lbneauthors.xls">lbneauthors.xls</a></li> spreadsheet for Gnumeric, Libre/Open Office and others
-</ul>
+<div>
+  <form action="{{ SITE_ROOT }}/members/export/" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+  </form>
+</div>
 
 {% endblock %}

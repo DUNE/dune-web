@@ -64,6 +64,19 @@ class Institution(models.Model):
     def get_sort_name(self):
         return self.sort_name or self.full_name
 
+    def get_active_members(self, date):
+        ret = []
+        for m in self.individual_set.all():
+            if m.is_active(date):
+                ret.append(m)
+
+        def last_name_order(indi):
+            return (indi.last_name.lower(), indi.first_name.lower())
+
+        return sorted(ret, key=last_name_order)
+
+
+
 class Individual(models.Model):
     'Information about an individual'
 
@@ -136,10 +149,12 @@ class Individual(models.Model):
     def is_active(self, when = None):
         '''
         Return True if the individual was active with the collaboration on
-        the given date (a datetime object).  If no date is given, "now" is used.
+        the given date (a datetime object).  
+
+        If no date is given, then active is always True
         '''
-        if when is None:
-            when = datetime.now().date()
+        if not when:
+            return True
         if self.begin_date > when:
             return False
         if self.end_date < when:

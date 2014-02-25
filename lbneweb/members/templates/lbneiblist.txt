@@ -1,7 +1,8 @@
-{% autoescape off %}
+{% autoescape off %}The LBNE collaboration as of {{ date }}.
 
-{% for inst in inst_list %}{{ inst.full_name|safe|upper }}
-{% for indi in inst.individual_set.all %}   {{indi.full_name|safe}}    {{indi.begin_date|date:"Y/m/d"}}       {{indi.IBR}}
+{% for inst,members in inst_member_list %}
+{{ inst.full_name|safe|upper }}
+{% for indi in members %}   {{indi.full_name|safe|ljust:"30"}} {{indi.begin_date|date:"Y/m/d"|ljust:"10"}} {{indi.IBR}}
 {% endfor %}
 {% endfor %}
 

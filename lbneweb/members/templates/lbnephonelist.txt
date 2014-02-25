@@ -1,9 +1,11 @@
+LBNE contact information as of {{ date }}
+
 (F = Faculty; P = Postdoc; E = Engineer; S = Student)			
 
 {% autoescape off %}
 
-{% for inst in inst_list %}{{ inst.full_name|safe|upper }}; {{ inst.address }}
-{% for indi in inst.individual_set.all %}   {{indi.full_name|safe|stringformat:'-20s'}} - {{indi.career}} 	{{indi.email}} 	{{indi.phone}}   
+{% for inst,members in inst_member_list %}{{ inst.full_name|safe|upper }}; {{ inst.address }}
+{% for indi in members %}   {{indi.full_name|safe|stringformat:'-30s'}} - {{indi.career}}	{{indi.email|ljust:'30'}}	{{indi.phone}}   
 {% endfor %}
 {% endfor %}
 
