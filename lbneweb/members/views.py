@@ -44,12 +44,14 @@ def active_members_filter(query, date = None):
     return query.filter(id__in = keep_ids)
 
 def search(request):
-    member_list = Individual.objects.select_related().filter(collaborator=True)
+    member_list = Individual.objects.select_related()
     # search form
     from members.forms import SearchMemberListForm
     if request.method == 'POST':
         form = SearchMemberListForm(request.POST) # bound form
         if form.is_valid():
+            if form.cleaned_data['is_collaborator']:
+                member_list = member_list.filter(collaborator=True)
             if not form.cleaned_data['institution'] == 'All':
                 member_list = member_list.filter(institution__short_name=form.cleaned_data['institution'])
             if not form.cleaned_data['role'] == 'All':
@@ -61,7 +63,6 @@ def search(request):
 
             thedate = form.cleaned_data['date']
             member_list = active_members_filter(member_list, thedate)
-
         else:
             member_list = member_list.filter(id=0) # hack, no match
 
@@ -181,9 +182,21 @@ def datestring2date(string):
         return None
     return ret.date()
 
-def export(request):
-    member_list = Individual.objects.select_related().filter(collaborator=True)
+def collatemembers(members):
+    inst_list = sorted(set([m.institution for m in members]), key=inst_name_order)
+    number = { inst.id:count+1 for count,inst in enumerate(inst_list) }
+    inst_members = []
+    for inst in inst_list:
+        im = []
+        for m in inst.individual_set.all():
+            if m in members:
+               im.append(m)
+        if not im:
+            continue
+        inst_members.append((inst,im))
+    return (inst_list, number, inst_members)
 
+def export(request):
     # form for filename and date
     filename = 'export.html'
     thedate = None
@@ -194,32 +207,39 @@ def export(request):
         if form.is_valid():
             thedate = form.cleaned_data['date']
             filename = form.cleaned_data['filename']
-            if thedate:
-                datestr = thedate.isoformat()
-        member_list = active_members_filter(member_list, thedate)
     # is there a better way?
     if request.method == 'GET' and request.GET.get('filename'):
         filename = request.GET.get('filename')
         thedate = datestring2date(request.GET.get('date'))
-        if thedate:
-            datestr = thedate.isoformat()
-        member_list = active_members_filter(member_list, thedate)
     else:
         form = ExportFilesForm()
 
-    member_list = sorted([m for m in member_list], key=last_name_order)
-    inst_list = sorted(set([m.institution for m in member_list]), key=inst_name_order)
-    inst_number = { inst.id:count+1 for count,inst in enumerate(inst_list) }
-    inst_member_list = [(inst,inst.get_active_members(thedate)) for inst in inst_list]
-    context = dict(inst_list = inst_list, 
-                   member_list = member_list, 
+    if thedate:
+        datestr = thedate.isoformat()
+
+    individuals = Individual.objects.select_related()
+
+    # all people actively associated with LBNE
+    associates = sorted(active_members_filter(individuals, thedate), key=last_name_order)
+    assoc_insts, assoc_number, assoc_inst_members = collatemembers(associates)
+
+    # active and collaborators
+    collaborators = [m for m in associates if m.collaborator]
+    collab_insts, collab_number, collab_inst_members = collatemembers(collaborators)
+
+    context = dict(associates = associates,
+                   assoc_insts = assoc_insts, 
+                   assoc_number = assoc_number, 
+                   assoc_inst_members = assoc_inst_members,
+                   collaborators = collaborators,
+                   collab_insts = collab_insts, 
+                   collab_number = collab_number, 
+                   collab_inst_members = collab_inst_members,
                    date = datestr, 
-                   inst_member_list = inst_member_list,
-                   inst_number = inst_number,
                    form = form)
 
     if filename.endswith('.xls'):
-        wb = members_to_xls(member_list) # fixme: pass context
+        wb = members_to_xls(associates) # fixme: pass context
         return xls_to_response(wb, filename)
 
     if filename.endswith('.pdf'):

@@ -7,15 +7,15 @@
 
 {% autoescape off %}
 
-{% for inst in inst_list %}\newcommand{% templatetag openbrace %}\{{inst.tag_name}}{% templatetag closebrace %}{% templatetag openbrace %}{{ inst.get_latex_name }}, {{ inst.get_latex_address_short }}, {{ inst.country }}{% templatetag closebrace %}
+{% for inst in collab_insts %}\newcommand{% templatetag openbrace %}\{{inst.tag_name}}{% templatetag closebrace %}{% templatetag openbrace %}{{ inst.get_latex_name }}, {{ inst.get_latex_address_short }}, {{ inst.country }}{% templatetag closebrace %}
 {% endfor %}
 
-{% for inst in inst_list %}
+{% for inst in collab_insts %}
 \affiliation{% templatetag openbrace %}\{{inst.tag_name}}{% templatetag closebrace %}
 {% endfor %}
 
 
-{% for member in member_list %}\author{% templatetag openbrace %}{{member.initials_last_name.split|join:"~"}}{% templatetag closebrace %}
+{% for member in collaborators %}\author{% templatetag openbrace %}{{member.initials_last_name.split|join:"~"}}{% templatetag closebrace %}
 \affiliation{% templatetag openbrace %}\{{ member.institution.tag_name }}{% templatetag closebrace %}
 {% endfor %}
 
