@@ -174,6 +174,13 @@ def last_name_order(indi):
     return (indi.last_name.lower(), indi.first_name.lower())
 
 
+def datestring2date(string):
+    try:
+        ret = datetime.strptime(string, '%Y-%m-%d')
+    except ValueError:
+        return None
+    return ret.date()
+
 def export(request):
     member_list = Individual.objects.select_related().filter(collaborator=True)
 
@@ -181,6 +188,7 @@ def export(request):
     filename = 'export.html'
     thedate = None
     datestr = '(undated)'
+    form = None
     if request.method == 'POST':
         form = ExportFilesForm(request.POST) # bound form
         if form.is_valid():
@@ -188,6 +196,13 @@ def export(request):
             filename = form.cleaned_data['filename']
             if thedate:
                 datestr = thedate.isoformat()
+        member_list = active_members_filter(member_list, thedate)
+    # is there a better way?
+    if request.method == 'GET' and request.GET.get('filename'):
+        filename = request.GET.get('filename')
+        thedate = datestring2date(request.GET.get('date'))
+        if thedate:
+            datestr = thedate.isoformat()
         member_list = active_members_filter(member_list, thedate)
     else:
         form = ExportFilesForm()
