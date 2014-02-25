@@ -184,7 +184,9 @@ def datestring2date(string):
 
 def collatemembers(members):
     inst_list = sorted(set([m.institution for m in members]), key=inst_name_order)
-    number = { inst.id:count+1 for count,inst in enumerate(inst_list) }
+    number = dict()
+    for count,inst in enumerate(inst_list):
+        number[inst.id] = count+1
     inst_members = []
     for inst in inst_list:
         im = []
