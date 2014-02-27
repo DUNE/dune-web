@@ -4,7 +4,11 @@ from django.db.models import Q
 
 from members.models import Individual, Institution, Role
 from members.forms import SearchMemberListForm, ExportFilesForm
-from datetime import datetime
+import datetime
+
+def home(request):
+    return render(request, 'home.html', dict())
+    
 
 class IndexView(generic.ListView):
     model = Individual
@@ -44,12 +48,13 @@ def active_members_filter(query, date = None):
     return query.filter(id__in = keep_ids)
 
 def search(request):
-    member_list = Individual.objects.select_related()
+    member_list = Individual.objects.all().filter(id=0)
     # search form
     from members.forms import SearchMemberListForm
     if request.method == 'POST':
         form = SearchMemberListForm(request.POST) # bound form
         if form.is_valid():
+            member_list = Individual.objects.select_related()
             if form.cleaned_data['is_collaborator']:
                 member_list = member_list.filter(collaborator=True)
             if not form.cleaned_data['institution'] == 'All':
@@ -62,10 +67,9 @@ def search(request):
                     | Q(first_name__icontains=name))          
 
             thedate = form.cleaned_data['date']
+            if thedate.lower in ['now','today']:
+                thedate = datetime.date.today()
             member_list = active_members_filter(member_list, thedate)
-        else:
-            member_list = member_list.filter(id=0) # hack, no match
-
     else:
         form = SearchMemberListForm() # unbound form
 
@@ -177,7 +181,7 @@ def last_name_order(indi):
 
 def datestring2date(string):
     try:
-        ret = datetime.strptime(string, '%Y-%m-%d')
+        ret = datetime.datetime.strptime(string, '%Y-%m-%d')
     except ValueError:
         return None
     return ret.date()
@@ -217,6 +221,8 @@ def export(request):
         form = ExportFilesForm()
 
     if thedate:
+        if thedate.lower in ['now','today']:
+            thedate = today()
         datestr = thedate.isoformat()
 
     individuals = Individual.objects.select_related()

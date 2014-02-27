@@ -14,7 +14,7 @@ urlpatterns = patterns(
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^$', views.IndexView.as_view(), name='index'),
+    url(r'^$', views.home, name='index'),
     url(r'^search/$', views.search, name='search'),
     url(r'^collaborator/(?P<pk>\d+)/$', views.CollaboratorView.as_view(), name='collaborator'),
     url(r'^institution/(?P<pk>\d+)/$', views.InstitutionView.as_view(), name='institution'),
