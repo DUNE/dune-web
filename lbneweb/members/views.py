@@ -6,6 +6,8 @@ from members.models import Individual, Institution, Role
 from members.forms import SearchMemberListForm, ExportFilesForm
 import datetime
 
+from util import last_name_order, datestring2date, collatemembers, active_members_filter
+
 def home(request):
     return render(request, 'home.html', dict())
     
@@ -42,10 +44,6 @@ class RoleView(generic.DetailView):
     model = Role
     template_name = 'role.html'
     context_object_name = 'member'
-
-def active_members_filter(query, date = None):
-    keep_ids = [m.id for m in query if m.is_active(date)]
-    return query.filter(id__in = keep_ids)
 
 def search(request):
     member_list = Individual.objects.all().filter(id=0)
@@ -164,41 +162,6 @@ def latex_response(pdffile, context):
     return response
 
 
-def inst_name_order(inst):
-    if inst.sort_name:
-        return inst.sort_name
-    name = inst.full_name.upper()
-    for ignore in ['UNIV. OF', 'UNIVERSITY COLLEGE', 'COLLEGE OF']:
-        ignore += ' '
-        if name.startswith(ignore):
-            return name[len(ignore):]
-    return name
-def last_name_order(indi):
-    return (indi.last_name.lower(), indi.first_name.lower())
-
-
-def datestring2date(string):
-    try:
-        ret = datetime.datetime.strptime(string, '%Y-%m-%d')
-    except ValueError:
-        return None
-    return ret.date()
-
-def collatemembers(members):
-    inst_list = sorted(set([m.institution for m in members]), key=inst_name_order)
-    number = dict()
-    for count,inst in enumerate(inst_list):
-        number[inst.id] = count+1
-    inst_members = []
-    for inst in inst_list:
-        im = []
-        for m in inst.individual_set.all():
-            if m in members:
-               im.append(m)
-        if not im:
-            continue
-        inst_members.append((inst,im))
-    return (inst_list, number, inst_members)
 
 def export(request):
     # form for filename and date

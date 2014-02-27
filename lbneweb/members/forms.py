@@ -1,12 +1,14 @@
 from django import forms
 from members.models import Institution, Role
 import datetime
-from django.contrib.admin.widgets import AdminDateWidget
+
+from util import inst_name_order
 
 # Helper Functions
 def institution2choices():
     choices = (('All', 'All Institutions'), )
-    for inst in Institution.objects.all():
+    inst_list = sorted(Institution.objects.all(), key=inst_name_order)
+    for inst in inst_list:
         choices += ((inst.short_name, inst.full_name),)
     return choices
 
