@@ -67,8 +67,6 @@ def search(request):
                     | Q(first_name__icontains=name))          
 
             thedate = form.cleaned_data['date']
-            if thedate.lower in ['now','today']:
-                thedate = datetime.date.today()
             member_list = active_members_filter(member_list, thedate)
     else:
         form = SearchMemberListForm() # unbound form
@@ -216,13 +214,16 @@ def export(request):
     # is there a better way?
     if request.method == 'GET' and request.GET.get('filename'):
         filename = request.GET.get('filename')
-        thedate = datestring2date(request.GET.get('date'))
+        thedate = request.GET.get('date')
+        if thedate and thedate.lower() in ['now','today']:
+            thedate = datetime.date.today()
+        else:
+            thedate = datestring2date(thedate)
+
     else:
         form = ExportFilesForm()
 
     if thedate:
-        if thedate.lower in ['now','today']:
-            thedate = today()
         datestr = thedate.isoformat()
 
     individuals = Individual.objects.select_related()
