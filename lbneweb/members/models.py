@@ -75,7 +75,8 @@ class Institution(models.Model):
 
         return sorted(ret, key=last_name_order)
 
-
+    def number_of_members(self, date = None):
+        return len(self.get_active_members(date))
 
 class Individual(models.Model):
     'Information about an individual'
