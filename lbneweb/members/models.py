@@ -28,6 +28,13 @@ class Role(models.Model):
     def get_absolute_url(self):
         return "%s/members/role/%d" % (settings.SITE_ROOT, self.id)
 
+    def number_of_individuals(self, date = None):
+        ret = []
+        for m in self.individual_set.all():
+            if m.is_active(date):
+                ret.append(m)
+        return len(ret)
+
 class Institution(models.Model):
     short_name = models.CharField(max_length=64)
     full_name =  models.CharField(max_length=1024)
@@ -161,3 +168,4 @@ class Individual(models.Model):
         if self.end_date < when:
             return False
         return True
+
