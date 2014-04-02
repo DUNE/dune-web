@@ -28,9 +28,12 @@ class Role(models.Model):
     def get_absolute_url(self):
         return "%s/members/role/%d" % (settings.SITE_ROOT, self.id)
 
-    def number_of_individuals(self, date = None):
+    def number_of_individuals(self, active = True, date = None):
         ret = []
-        for m in self.individual_set.all():
+        lst = self.individual_set.all()
+        if not active:
+            return len(lst)
+        for m in lst:
             if m.is_active(date):
                 ret.append(m)
         return len(ret)
