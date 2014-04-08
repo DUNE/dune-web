@@ -49,6 +49,7 @@ class ExportFilesForm(forms.Form):
         ('lbneauthor-main-authblk.pdf','PDF (authblk)'),
         ('lbneauthor-main-revtex4.pdf', 'PDF (revtex4)'),
         ('lbneauthors.xls', 'Spread sheet (xls)'),
+        ('lbneauthor-arxiv.txt', 'arXiv list (txt)'),
         ])
     date = forms.DateField(
         label='Active date (YYYY-MM-DD)', required=False, initial = datetime.date.today,
