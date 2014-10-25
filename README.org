@@ -1,2 +1,3 @@
 LBNE Collaboration database and web front-end application.
 
+For more info see [[./lbnweb/README.org]]
