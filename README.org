@@ -1,3 +1,9 @@
-LBNE Collaboration database and web front-end application.
+LBNE Collaboration web applications.
 
-For more info see [[./lbneweb/README.org]]
+* What is here?
+
+** Collaboration Database and Web Interface
+
+Contact information for LBNE collaborators and "associates" are managed by a django web application at https://lbne.bnl.gov/web/.  For more info about the application see [[./lbneweb/README.org]]
+
+
