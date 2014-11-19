@@ -31,3 +31,6 @@ def docs():
     #put('README.html', 'html/index.html')
     local('scp README.html p-lbne-web@cdcvs.fnal.gov:html/index.html')
     # fabric's ssh doesn't speak kerberos
+
+def server():
+    local('python manage.py runserver_plus')
