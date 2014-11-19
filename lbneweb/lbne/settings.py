@@ -204,17 +204,23 @@ if site_packages_dir not in sys.path:
     sys.path.insert(0, site_packages_dir)
 
 
-print THIS_SERVER_NAME
+print 'Running on server:', THIS_SERVER_NAME
 
 if THIS_SERVER_NAME.startswith('lbne'):
     DEBUG = TEMPLATE_DEBUG = True
     SITE_ROOT = '/web'
     DEFAULT_FROM_EMAIL = 'www@lbne.bnl.gov'
 
-elif THIS_SERVER_NAME.startswith('localhost') or THIS_SERVER_NAME.startswith('lycastus'):
+elif THIS_SERVER_NAME.startswith('localhost'):
     DEBUG = TEMPLATE_DEBUG = True
     SITE_ROOT = '/web'
     DEFAULT_FROM_EMAIL = 'www@localhost'
+
+elif THIS_SERVER_NAME.startswith('lycastus'):
+    DEBUG = TEMPLATE_DEBUG = True
+    SITE_ROOT = ''
+    DEFAULT_FROM_EMAIL = 'www@localhost'
+
 else:                           # ./manage.py runserver_plus
     DEBUG = TEMPLATE_DEBUG = True
     SITE_ROOT = ''
