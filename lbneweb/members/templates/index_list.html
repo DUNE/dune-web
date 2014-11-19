@@ -35,7 +35,7 @@
 	      <a alt="{{ role.desc }}" href="{{ role.get_absolute_url }}">{{ role.name }}</a>
 	      {% endfor %}
 	    </td>
-            <td>{{ member.email }}</td>
+            <td><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
             <td>{{ member.phone }}</td>
         </tr>
         {% endfor %}
