@@ -9,7 +9,7 @@ import socket
 THIS_SERVER_NAME = socket.gethostname()
 
 
-conf_file = os.path.join(PROJECT_BASE, 'duneweb.conf')
+conf_file = os.path.join(PROJECT_BASE, 'people.conf')
 assert os.path.exists(conf_file)
 from ConfigParser import SafeConfigParser
 conf = SafeConfigParser()
