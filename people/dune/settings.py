@@ -208,7 +208,7 @@ print 'Running on server:', THIS_SERVER_NAME
 
 if THIS_SERVER_NAME.startswith('dune'):
     DEBUG = TEMPLATE_DEBUG = True
-    SITE_ROOT = '/web'
+    SITE_ROOT = '/people'
     DEFAULT_FROM_EMAIL = 'www@dune.bnl.gov'
 
 elif THIS_SERVER_NAME.startswith('localhost'):
