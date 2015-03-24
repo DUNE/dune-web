@@ -1,0 +1,12 @@
+\documentclass{report}
+\usepackage{authblk}
+
+{% include "author-payload-authblk.tex" %}
+
+\title{The DUNE Collaboration}
+\date{ {{ date }} }
+\begin{document}
+\renewcommand\Authfont{\small}
+\renewcommand\Affilfont{\itshape}
+\maketitle % this is needed to trigger the author list
+\end{document}

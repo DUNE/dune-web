@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}DUNE Collaboration Web{% endblock %}
+
+{% load staticfiles %}
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="{% static "css/tablesorter.css" %}")?>
+{% endblock %}
+
+{% block content %}
+
+<h1>DUNE Collaborators and Associates</h1>
+
+This web page provides views into the DUNE collaboration database.
+
+<h2>DUNE Members</h2>
+
+The DUNE members view includes collaborators and associates.  It has
+the following available features:
+
+<dl>
+<dt><a href="{{ SITE_ROOT }}/members/search/">Search</a></dt>
+<dd>Search the database.</dd>
+<dt><a href="{{ SITE_ROOT }}/members/export/">Export</a></dt>
+<dd>Export to various file formats.  A few short-cuts:
+<ul>
+<li>Current Author List:
+  [<a href="{{ SITE_ROOT }}/members/export/?filename=author-payload-authblk.tex&date=now">TEX (body)</a>]
+  [<a href="{{ SITE_ROOT }}/members/export/?filename=author-main-authblk.tex&date=now">TEX (main)</a>]
+  [<a href="{{ SITE_ROOT }}/members/export/?filename=author-main-authblk.pdf&date=now">PDF</a>]
+ </li>
+<li> <a href="{{ SITE_ROOT }}/members/export/?filename=phonelist.txt&date=now">phone list</a></li>
+<li> <a href="{{ SITE_ROOT }}/members/export/?filename=iblist.txt&date=now">institutional board list</a></li>
+</dd>
+</ul>
+</dl>
+
+<hr>
+
+<h3>Contact information</h3>
+
+<dl>
+<dt>Database content</dt>
+<dd>Maury Goodman (maury DOT goodman AT anl DOT gov)</dd>
+<dt>Functionality</dt>
+<dd>Brett Viren (bv AT bnl DOT gov)</dd>
+</dl>
+
+{% endblock %}

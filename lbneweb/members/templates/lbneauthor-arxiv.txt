@@ -1,3 +1,0 @@
-{% load helpers %}{% autoescape off %}LBNE Collaboration: {% for member in collaborators %}{{member.first_name}} {{member.last_name}} ({{ collab_number|dictref:member.institution.id }}){% include "comma.tmpl" %}{% endfor %}
-({% for inst in collab_insts %}({{ collab_number|dictref:inst.id }}) {{inst.get_latex_name}}{% include "comma.tmpl" %}{% endfor %})
-{% endautoescape %}

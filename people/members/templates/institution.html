@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}DUNE Collaboration{% endblock %}
+
+{% block content %}
+
+<h2>{{ member.full_name }}</h2>
+<p>
+  <ul>
+    <li>Tag name: {{ member.tag_name }}</li>
+    <li>Short name: {{ member.short_name }}</li>
+    <li>Address: {{ member.address }}</li>
+    <li>Country: {{ member.country }}</li>
+    {% if perms.members.change_institution %}
+    <li> <a href="{{ SITE_ROOT }}/admin/members/institution/{{ member.id }}">[edit]</a></li>
+    {% endif %}
+  </ul>
+</p>
+
+<h3>Members:</h3>
+<p>
+  {% for ind in member.individual_set.all %}
+  <li>
+    <a href='{{ ind.get_absolute_url }}'>{{ ind.full_name }}</a>
+    [{% for role in ind.role.all %}	    
+    <a alt="{{ role.desc }}" href="{{ role.get_absolute_url }}">{{ role.name }}</a>
+    {% endfor %}]
+  </li>
+  {% endfor %}
+</p>
+
+
+{% endblock %}

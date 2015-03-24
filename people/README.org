@@ -1,0 +1,219 @@
+#+title: DUNE People Database
+
+This django web application manages contact information about people associated with the Deep Underground Neutrino Experiment (DUNE). It is running at:
+
+https://dune.bnl.gov/people
+
+Currently, it provides searching and browsing a database of Individuals, Institutions and Roles and can export the database in a variety of formats including plain text, LaTeX and XLS.
+
+* Installation
+
+** Prepare the server
+
+Obviously django is needed and in addition a few extra packages.  It's recommended to install django as a system package and the rest under a virtualenv. 
+
+#+BEGIN_SRC sh :eval no
+$ sudo apt-get install django virtualenv
+# as user django
+$ cd /srv/www
+$ virtualenv --system-site-packages venv
+$ source venv/bin/activate
+(venv)$ pip install django_extensions Werkzeug south ipython xlwt
+$ deactivate
+$ mkdir -p /srv/www/django/duneweb/
+$ cd /srv/www/django/duneweb/
+$ ln -s ../venv/lib/python2.7/site-packages .
+#+END_SRC
+
+Note, the app does not run in the virtualenv explicitly but finds the packages through the symlinked directory.
+
+** Source code
+
+Source code for the application is available no GitHub.  
+
+#+BEGIN_EXAMPLE
+  $ git clone https://github.com/DUNE/dune-web.git
+#+END_EXAMPLE
+or
+#+BEGIN_EXAMPLE
+  $ git clone git@github.com:DUNE/dune-web.git
+#+END_EXAMPLE
+
+** Deploy the project
+
+Don't edit files on the server.  Edit them from a cloned repository and use Fabric and the provided=fabfile.py= to deploy. The deployment basically involves an =rsync= of the source to the server
+
+#+BEGIN_SRC sh :eval no
+$ cd /path/to/source/dune-web/people
+$ emacs fabfile.py
+$ fab deploy
+#+END_SRC
+
+** Configuration
+
+The file =people/people.conf= must be written to tell some basic configuration items.  It should look something like:
+
+#+BEGIN_SRC conf
+[common]
+secret_key = <redacted>
+
+[database default]
+name = people.sqlite3
+user =
+password =
+host =
+port =
+#+END_SRC
+
+Note a 50-character django secret key needs defining.  For sqlite3 no other info but the file named with =name= is needed, but the remaining keys must be included nonetheless.
+
+The database can then be initialized with:
+
+#+BEGIN_SRC sh :eval no
+$ ./manage.py syncdb
+#+END_SRC
+
+** Prime the DB
+
+The DB may need to be primed (with members).  There are scripts that *attempt* to parse the text files in DocDB 270.  They will most likely not succeed until a multitude of deviations from the expected format is cleaned up in the text files.
+
+To start, put latest =lbneiblist.txt= and =lbnephonelist.txt= from: http://lbne2-docdb.fnal.gov:8080/cgi-bin/ShowDocument?docid=270 into =members/data/= (avoid committed these files).
+
+The files can be tested with:
+
+#+BEGIN_SRC sh :eval no
+$ ./manage.py shell
+#+END_SRC
+#+BEGIN_SRC python :eval no
+from members import loader
+reload (loader); d = loader.Data(); d.load()
+# rinse-repeat
+#+END_SRC
+
+Beat on the wound until the blood runs clear then run:
+
+#+BEGIN_SRC sh :eval no
+$ ./manage.py runscript load_members --script-args "purge roles members"
+#+END_SRC
+
+*** Copy the DB
+
+If Sqlite3 is used then an existing =*.sqlite3= file can simple be copied into place under =people/=.
+
+** Testing
+
+The database can be examined interactively.  For example:
+
+#+BEGIN_SRC sh :eval no
+$ ./manage.py shell
+#+END_SRC
+
+#+BEGIN_SRC python :eval no
+from members.models import *
+iall = Individual.objects.all()
+me = [i for i in iall if i.last_name == 'Viren'][0]
+print me.begin_date
+2008-05-01
+#+END_SRC
+
+
+* Schema evolution
+
+Changes to the database are handled by "south".  The salient instructions are at:
+
+http://south.readthedocs.org/en/latest/tutorial/part1.html
+
+On test server:
+
+ 1) edit the model, try to add instead of subtract
+ 2) create the migration: 
+ 3) apply it
+
+#+BEGIN_EXAMPLE
+$ ./manage.py schemamigration members --auto
+$ ./manage.py migrate members
+#+END_EXAMPLE
+
+Deploy:
+
+#+BEGIN_EXAMPLE
+$ fab deploy
+#+END_EXAMPLE
+
+On production server
+#+BEGIN_EXAMPLE
+$ ./manage.py migrate members
+#+END_EXAMPLE
+
+* Run the server
+
+You can run the app from the server provided by =manage.py= or in a full-blown Apache via WSGI.
+
+** Testing server
+
+The a testing server can be started with:
+
+#+BEGIN_SRC sh :eval no
+$ ./manage.py runserver_plus
+#+END_SRC
+
+This starts on a non-standard port.  To view remotely you may need:
+
+#+BEGIN_SRC sh :eval no
+ssh -L 8000:localhost:8000 django@dune.bnl.gov
+#+END_SRC
+
+** Apache + WSGI
+
+To run under Apache + WSGI you need some configuration like:
+
+#+BEGIN_SRC xml 
+WSGIDaemonProcess django processes=2 threads=15 display-name=%{GROUP}
+
+WSGIImportScript /srv/www/django/duneweb/python/duneweb.wsgi process-group=django application-group=%{GLOBAL}
+WSGIScriptAlias /web /srv/www/django/duneweb/python/duneweb.wsgi
+WSGIProcessGroup django 
+
+Alias /media/ /srv/www/django/duneweb/media/
+<Directory /srv/www/django/duneweb/python>
+  Order allow,deny
+  Allow from all
+</Directory>
+#+END_SRC
+
+The file =duneweb/python/duneweb.wsgi= may need adjusting.
+
+
+
+* Create new applications
+
+A new application is begun like:
+
+#+BEGIN_SRC sh :eval no
+$ ./manage startapp <appname>
+$ emacs <appname>/models.py
+$ ./manage syncdb
+#+END_SRC
+
+
+* Updating this file on Redmine.
+
+This file is served by FNAL Redmine from [[https://cdcvs.fnal.gov/redmine/embedded/lbne-web/][this url]].  To update it load this file in =emacs= and do
+
+#+BEGIN_SRC emacs
+C-cC-ehh
+#+END_SRC
+
+Then copy the resulting =README.html= file to the server:
+
+#+BEGIN_SRC sh :eval no
+$ scp README.html p-lbne-web@cdcvs.fnal.gov:html/index.html
+#+END_SRC
+
+-----
+
+* Maintainers
+
+It was written by Brett Viren (=bv@bnl.gov=), improved by Chao Zheng (=chao@bnl.gov=) and then upgraded to recent version of django and now maintained by Brett Viren.
+
+The database content is managed by Maury Goodman (=maury.goodman@anl.gov=).

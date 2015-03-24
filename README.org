@@ -1,9 +1,9 @@
-LBNE Collaboration web applications.
+Dune Collaboration Web Applications.
 
 * What is here?
 
-** Collaboration Database and Web Interface
+** People Database and Web Interface
 
-Contact information for LBNE collaborators and "associates" are managed by a django web application at https://lbne.bnl.gov/web/.  For more info about the application see [[./lbneweb/README.org]]
+Contact information for DUNE collaborators and "associates" are managed by a django web application at https://dune.bnl.gov/people/.  For more info about the application see [[./people/README.org]]
 
 

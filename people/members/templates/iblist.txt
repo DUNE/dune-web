@@ -1,0 +1,9 @@
+{% autoescape off %}The DUNE collaboration as of {{ date }}.
+
+{% for inst,members in collab_inst_members %}
+{{ inst.full_name|safe|upper }}
+{% for indi in members %}   {{indi.full_name|safe|ljust:"30"}} {{indi.begin_date|date:"Y/m/d"|ljust:"10"}} {{indi.IBR}}
+{% endfor %}
+{% endfor %}
+
+{% endautoescape %}
