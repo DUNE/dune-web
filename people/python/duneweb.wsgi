@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os, sys
-path = '/srv/www/django/duneweb'
+path = '/srv/www/django/people'
 if path not in sys.path:
     sys.path.append(path)
 sys.path.append('/srv/www/venv/lib/python2.6/site-packages')
