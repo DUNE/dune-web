@@ -24,6 +24,7 @@
             <th>Roles</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Country</th>
         </tr></thead>
         <tbody>
         {% for member in member_list %}
@@ -37,6 +38,7 @@
 	    </td>
             <td><a href="mailto:{{ member.email }}">{{ member.email }}</a></td>
             <td>{{ member.phone }}</td>
+            <td>{{ member.institution.country }}</td>
         </tr>
         {% endfor %}
         </tbody>
