@@ -96,7 +96,7 @@ class Individual(models.Model):
     last_name = models.CharField('Last Name',max_length=64)
     email = models.EmailField(blank=True)
     phone = models.CharField(max_length=64, blank=True)
-    collaborator = models.BooleanField()
+    collaborator = models.BooleanField(default=True)
     begin_date = models.DateField(max_length=50, default=datetime(2008,5,1))
     end_date = models.DateField(max_length=50, default=datetime(2038,5,1))
     institution = models.ForeignKey(Institution)
