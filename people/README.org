@@ -10,10 +10,10 @@ Currently, it provides searching and browsing a database of Individuals, Institu
 
 ** Prepare the server
 
-Obviously django is needed and in addition a few extra packages.  It's recommended to install django as a system package and the rest under a virtualenv. 
+Obviously django is needed and in addition a few extra packages.  It's recommended to install django as a system package and the rest under a =virtualenv= environment. 
 
 #+BEGIN_SRC sh :eval no
-$ sudo apt-get install django virtualenv
+$ sudo apt-get install python-django virtualenv
 # as user django
 $ cd /srv/www
 $ virtualenv --system-site-packages venv
@@ -21,7 +21,7 @@ $ source venv/bin/activate
 (venv)$ pip install django_extensions Werkzeug south ipython xlwt
 $ deactivate
 $ mkdir -p /srv/www/django/duneweb/
-$ cd /srv/www/django/duneweb/
+$ cd /srv/www/django/duneweb/  # directory holding this file
 $ ln -s ../venv/lib/python2.7/site-packages .
 #+END_SRC
 

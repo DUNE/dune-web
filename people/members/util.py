@@ -4,6 +4,7 @@ Some utility functions
 '''
 
 import datetime
+from collections import defaultdict
 
 def inst_name_order(inst):
     'Return a string used for ordering institutions.'
@@ -52,6 +53,21 @@ def collatemembers(members):
             continue
         inst_members.append((inst,im))
     return (inst_list, number, inst_members)
+
+def country_counts(insts, thedate):
+    '''Return ordered list of tuples:
+    (country, sequence of institution, sequence of individuals)
+    '''
+    country_insts = defaultdict(list)
+    country_indiv = defaultdict(list)
+    for inst in insts:
+        country_insts[inst.country].append(inst)
+        country_indiv[inst.country] += inst.get_active_members(thedate)
+    ret = list()
+    for c in list(set(country_insts.keys() + country_indiv.keys())):
+        ret.append((c, country_insts[c], country_indiv[c]))
+    return ret
+    
 
 def active_members_filter(query, date = None):
     'Given a query of members, return a filtered one that only has active members'

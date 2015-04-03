@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}DUNE Collaboration Stats{% endblock %}
+
+
+
+{% block content %}
+<h2>Number of members and institutions per country</h2>
+<table style='margin-top: 20px' id='table_members_per_country' class='tablesorter'>
+  <thead><tr>
+      <th style='width:250px;'>Country</th>
+      <th>#members</th>
+      <th>#institutions</th>
+  </tr></thead>
+  <tbody>
+    {% for country,insts,members in by_country %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+      <td>{{ country }}</td>
+      <td>{{ members|length }}</td>
+      <td>{{ insts|length }}</td>
+    </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+
+
+<h2>Number of members per institution</h2>
+<table style='margin-top: 20px' id='table_members_per_institution' class='tablesorter'>
+  <thead><tr>
+      <th style='width:250px;'>Name</th>
+      <th>Country</th>
+      <th>#members</th>
+  </tr></thead>
+  <tbody>
+    {% for inst,members in collab_inst_members %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+      <td>{{ inst.full_name }}</td>
+      <td>{{ inst.country }}</td>
+      <td>{{ inst.number_of_members }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+

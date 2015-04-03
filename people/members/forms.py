@@ -50,6 +50,7 @@ class ExportFilesForm(forms.Form):
         ('author-main-revtex4.pdf', 'PDF (revtex4)'),
         ('authors.xls', 'Spread sheet (xls)'),
         ('author-arxiv.txt', 'arXiv list (txt)'),
+        ('stats.html', 'Stats (html)'),
         ])
     date = forms.DateField(
         label='Active date (YYYY-MM-DD)', required=False, initial = datetime.date.today,

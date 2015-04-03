@@ -206,9 +206,14 @@ if site_packages_dir not in sys.path:
 
 print 'Running on server:', THIS_SERVER_NAME
 
-DEBUG = TEMPLATE_DEBUG = True
-SITE_ROOT = '/people'
-DEFAULT_FROM_EMAIL = 'www@dune.bnl.gov'
+if THIS_SERVER_NAME.startswith('lycastus'):
+    DEBUG = TEMPLATE_DEBUG = True
+    SITE_ROOT = ''
+    DEFAULT_FROM_EMAIL = 'root@localhost'
+else:
+    DEBUG = TEMPLATE_DEBUG = True
+    SITE_ROOT = '/people'
+    DEFAULT_FROM_EMAIL = 'www@dune.bnl.gov'
 
 # if THIS_SERVER_NAME.startswith('dune'):
 #     DEBUG = TEMPLATE_DEBUG = True

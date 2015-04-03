@@ -6,7 +6,7 @@ from members.models import Individual, Institution, Role
 from members.forms import SearchMemberListForm, ExportFilesForm
 import datetime
 
-from util import last_name_order, datestring2date, collatemembers, active_members_filter
+from util import last_name_order, datestring2date, collatemembers, active_members_filter, country_counts
 
 def home(request):
     return render(request, 'home.html', dict())
@@ -207,6 +207,7 @@ def export(request):
                    collab_insts = collab_insts, 
                    collab_number = collab_number, 
                    collab_inst_members = collab_inst_members,
+                   by_country = country_counts(collab_insts, thedate),
                    date = datestr, 
                    form = form)
 
