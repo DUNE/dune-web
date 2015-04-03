@@ -7,7 +7,7 @@ class RoleAdmin(admin.ModelAdmin):
 
 class IndividualAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_name', 'roles')
-    list_filter = ('role','institution')
+    list_filter = ('collaborator', 'role','institution')
     list_per_page = 1000
     ordering = ('last_name', 'first_name')
 
