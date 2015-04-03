@@ -196,6 +196,22 @@ $ ./manage syncdb
 #+END_SRC
 
 
+* Manual SQL butchering
+
+Remove members with end dates before some date
+
+#+BEGIN_EXAMPLE
+$ sqlite3 people.sqlite3 
+sqlite> delete from members_individual where end_date<'2015-01-01';
+#+END_EXAMPLE
+
+Change everyones start date
+
+#+BEGIN_EXAMPLE
+$ sqlite3 people.sqlite3 
+sqlite> update members_individual set begin_date = '2015-01-01' where 1;
+#+END_EXAMPLE
+
 * Updating this file on Redmine.
 
 This file is served by FNAL Redmine from [[https://cdcvs.fnal.gov/redmine/embedded/lbne-web/][this url]].  To update it load this file in =emacs= and do
@@ -217,3 +233,4 @@ $ scp README.html p-lbne-web@cdcvs.fnal.gov:html/index.html
 It was written by Brett Viren (=bv@bnl.gov=), improved by Chao Zheng (=chao@bnl.gov=) and then upgraded to recent version of django and now maintained by Brett Viren.
 
 The database content is managed by Maury Goodman (=maury.goodman@anl.gov=).
+
