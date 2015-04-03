@@ -46,7 +46,7 @@ class Institution(models.Model):
     country = models.CharField(max_length=128,null=True,blank=True) # sorry Thailand
     
     class Meta:
-        ordering = ['full_name', ]
+        ordering = ['sort_name', ]
         
     def __unicode__(self):
         return self.short_name
