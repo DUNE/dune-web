@@ -14,7 +14,7 @@
 {% endfor %}
 
 {% for inst in collab_insts %}
-\affil[{{ collab_number|dictref:inst.id }}]{% templatetag openbrace %}\mbox{% templatetag openbrace %}{{inst.get_latex_name}}, {{ inst.get_latex_address_short }}, {{ inst.country }}{% templatetag closebrace %}{% templatetag closebrace %}
+\affil[{{ collab_number|dictref:inst.id }}]{% templatetag openbrace %}{{inst.get_latex_name}}, {{ inst.get_latex_address_short }}, {{ inst.country }}{% templatetag closebrace %}
 {% endfor %}
 
 {% endautoescape %}
