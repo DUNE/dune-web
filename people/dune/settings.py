@@ -161,7 +161,7 @@ INSTALLED_APPS = (
     #'django.contrib.admindocs',
 
     # for schema evolution:
-    'south',
+    #'south',
 
     'django_extensions',
     'members',
