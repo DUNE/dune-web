@@ -71,6 +71,7 @@ def country_counts(insts, thedate):
 
 def active_members_filter(query, date = None):
     'Given a query of members, return a filtered one that only has active members'
+    if date is None:
+        return query
     keep_ids = [m.id for m in query if m.is_active(date)]
-    return query.filter(id__in = keep_ids)
-
+    return query.filter(begin_date__lte = date).filter(end_date__gte = date)
