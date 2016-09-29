@@ -45,7 +45,11 @@
         <tfoot><tr>
             <td colspan='5' style='text-align: center;'>
                 {{ instCount }} institution{{ instCount|pluralize }}, 
+		{% if form.is_collaborator.value %}
                 {{ count }} collaborator{{ count|pluralize }}
+		{% else %}
+                {{ count }} individual{{ count|pluralize }}
+		{% endif %}
             </td>
         </tr></tfoot>
     </table>
