@@ -232,5 +232,7 @@ $ scp README.html p-lbne-web@cdcvs.fnal.gov:html/index.html
 
 It was written by Brett Viren (=bv@bnl.gov=), improved by Chao Zheng (=chao@bnl.gov=) and then upgraded to recent version of django and now maintained by Brett Viren.
 
-The database content is managed by Maury Goodman (=maury.goodman@anl.gov=).
+The database content currently managed by
+- Maxine Hronek (=maxine@fnal.gov=)
+- Bob Wilson (=Bob.Wilson@colostate.edu=)
 
