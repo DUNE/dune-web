@@ -15,7 +15,7 @@
 {% autoescape off %}
 
 
-{% for member in collaborators %}\author[{{ collab_number|dictref:member.institution.id }}]{% templatetag openbrace %}{{member.get_latex_name}}{% templatetag closebrace %}
+{% for member in collaborators %}\author[{{ collab_number|dictref:member.institution.id }}{% if member.institution2 %},{{ collab_number|dictref:member.institution2.id }}{% endif %}]{% templatetag openbrace %}{{member.get_latex_name}}{% templatetag closebrace %}
 {% endfor %}
 
 {% for inst in collab_insts %}

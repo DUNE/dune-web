@@ -156,7 +156,9 @@ def latex_response(pdffile, context):
     #print pdffile
     texfile = os.path.splitext(pdffile)[0]+'.tex'
     pdf = process_latex(texfile, context)
-    response = HttpResponse(mimetype="application/pdf")
+    #response = HttpResponse(mimetype="application/pdf")
+    # newer django
+    response = HttpResponse(content_type="application/pdf")
     response['Content-Disposition'] = 'attachment; filename=%s' % pdffile
     response.write(pdf)
     return response

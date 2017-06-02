@@ -206,7 +206,8 @@ if site_packages_dir not in sys.path:
 
 print 'Running on server:', THIS_SERVER_NAME
 
-if THIS_SERVER_NAME.startswith('lycastus'):
+# bv's workstation:
+if THIS_SERVER_NAME.startswith('hierocles'):
     DEBUG = TEMPLATE_DEBUG = True
     SITE_ROOT = ''
     DEFAULT_FROM_EMAIL = 'root@localhost'
